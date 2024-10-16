@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('contact_detail')->nullable();
             $table->string('expertise')->nullable();
             $table->string('location')->nullable();
+            $table->string('profile_picture')->nullable();
+            $table->date('dob')->nullable();
             $table->foreignId('account_id')->constrained();
             $table->timestamps();
         });

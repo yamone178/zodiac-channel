@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('zodiacs', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->date('from_date');
-            $table->date('to_date');
+            $table->string('from_date');
+            $table->string('to_date');
             $table->timestamps();
         });
     }

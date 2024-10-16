@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->text('bio')->nullable();
             $table->string('location')->nullable();
+            $table->string('profile_picture')->nullable();
+            $table->date('dob')->nullable();
             $table->foreignId('account_id')->constrained();
             // $table->string('name');
             // $table->string('email')->unique();

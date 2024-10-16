@@ -13,16 +13,16 @@ return new class extends Migration
     {
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
-            $table->string('user_name');
+            $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->enum('role',['user', 'expert','admin'])->default('user');
-            $table->string('profile_picture')->nullable();
-            $table->date('dob')->nullable();
-            $table->boolean('status')->default(1);   
+            $table->enum('role',['user', 'expert'])->default('user');
+            $table->boolean('approved')->default(1);   
             $table->timestamp('joined_at')->useCurrent();
             $table->foreignId('admin_id')->constrained();
             $table->foreignId('zodiac_id')->constrained();
+            $table->rememberToken();
+            $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
         });
     }
