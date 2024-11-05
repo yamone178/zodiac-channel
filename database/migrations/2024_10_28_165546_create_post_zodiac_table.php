@@ -11,15 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('post_zodiac', function (Blueprint $table) {
             $table->id();
-            $table->text('bio')->nullable();
-            $table->string('location')->nullable();
-            $table->string('profile_picture')->nullable();
-            $table->date('dob')->nullable();
-            $table->foreignId('account_id')->constrained();
-       
-            
+            $table->foreignId('post_id');
+            $table->foreignId('zodiac_id'); 
             $table->timestamps();
         });
     }
@@ -29,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('post_zodiac');
     }
 };

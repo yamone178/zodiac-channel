@@ -3,6 +3,7 @@ import { Link } from '@inertiajs/react';
 export default function NavLink({ active = false, className = '', children, ...props }) {
     return (
         <Link
+            
             {...props}
             className={
                 'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 transition duration-150 ease-in-out focus:outline-none ' +
@@ -12,7 +13,11 @@ export default function NavLink({ active = false, className = '', children, ...p
                 className
             }
         >
-            {children}
+            <div className=' p-[10px_15px_10px_15px] text-center flex flex-col items-center  '>
+                   {children}  
+             </div>
+                                   
+         
         </Link>
     );
 }

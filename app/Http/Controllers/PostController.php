@@ -5,6 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use App\Models\Zodiac;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
+
+use function PHPSTORM_META\map;
 
 class PostController extends Controller
 {
@@ -13,7 +19,24 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::with(['zodiacs', 'account'])->get();
+
+        $zodiacs = Zodiac::all();
+
+        foreach ($posts as $post) {
+            if ($post['images']) {
+                
+               $post['images'] = Post::passImages($post['images']);
+            } else {
+                // Set images to an empty array if none are available
+                $post['images'] = [];
+            }
+        }
+
+      
+       
+        
+        return Inertia::render('Home/Home', ['posts'=>$posts, 'zodiacs'=> $zodiacs]);
     }
 
     /**
@@ -21,7 +44,11 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+       
+        
+        
+
+        // return Inertia::render('Home/Home', ['zodiacs'=> $zodiacs]);
     }
 
     /**
@@ -29,15 +56,62 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        //
+        
+        $post = new Post();
+
+        $post->caption = $request['caption'];
+
+
+        // Save image
+        
+        $images = [];
+
+        if ($request->hasFile('images')) {
+            foreach ($request['images'] as $key=>$image) {
+                $fileName = uniqid().$image->getClientOriginalName();
+               $img = $image->store('images/'.$fileName, 'public');
+                
+                // $image->move(public_path().'/images/',$fileName);
+    
+                $images[] = $img;
+            }
+        }
+        $post->images = json_encode($images);
+
+        $post->account_id = Auth::id();
+
+        $post->save();
+
+        // save tagged zodiacs 
+        
+        $post->zodiacs()->attach($request['tagged_zodiacs']);
+
+       
+
+      
+        return redirect()->route('home');
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Post $post)
+    public function show($id)
     {
-        //
+
+
+        $post = Post::with(['zodiacs', 'account'])->find($id);
+
+        if ($post['images']) {
+            // Split the comma-separated string into an array
+           
+           $post['images'] = Post::passImages($post['images']);
+        } else {
+            // Set images to an empty array if none are available
+            $post['images'] = [];
+        }
+       
+        return Inertia::render('Post/Show', ['post'=>$post]);
     }
 
     /**
