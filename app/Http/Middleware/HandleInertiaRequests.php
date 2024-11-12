@@ -38,6 +38,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user() ? Auth::user()->load('zodiac') : null,
             ],
+            'followings' => $request->user() ? Auth::user()->load(['zodiac', 'followings']) : null,
             'zodiacs' => Zodiac::all(),
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),

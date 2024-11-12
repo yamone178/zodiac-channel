@@ -55,4 +55,12 @@ class Account extends Authenticatable
     {
         return $this->belongsTo(Zodiac::class);
     }
+
+    public function followers() {
+        return $this->belongsToMany(Account::class, 'followers', 'following_id', 'account_id')->withTimestamps();
+    }
+    
+    public function followings() {
+        return $this->belongsToMany(Account::class, 'followers','account_id', 'following_id')->withTimestamps();
+    }
 }

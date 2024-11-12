@@ -13,8 +13,12 @@ return new class extends Migration
     {
         Schema::create('followers', function (Blueprint $table) {
             $table->id();
-            $table->foreign('id', 'account_id')->references('id')->on('accounts');
-            $table->foreign('id', 'following_id')->references('id')->on('accounts');
+            $table->unsignedBigInteger('account_id');  // Define the account_id column
+            $table->unsignedBigInteger('following_id'); // Define the following_id column
+
+            // Add foreign key constraints
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
+            $table->foreign('following_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->timestamps();
         });
     }

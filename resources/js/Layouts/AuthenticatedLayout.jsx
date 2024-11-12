@@ -53,7 +53,7 @@ export default function Authenticated({ user, header, children}) {
                                         <p className='mt-3'>My Horoscope</p>
                                 </NavLink>
 
-                                <NavLink  className=' text-main-900' href={route('home')} >
+                                <NavLink  className=' text-main-900' href={route('zodiac-mate')} active={route().current('zodiac-mate')} >
                                          <LiaUserFriendsSolid fontSize="27px" />
 
                                         <p className='mt-3'>Zodiac Mates</p>

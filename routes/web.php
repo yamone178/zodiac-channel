@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\HoroscopeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
@@ -47,7 +48,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/post/{id}', [PostController::class, 'show'])->name('post.show');
 
     Route::get('/horoscope',[HoroscopeController::class, 'index'])->name('horoscope');
+    Route::get('/zodiac-mates',[FollowerController::class, 'create'])->name('zodiac-mate');
 
+    Route::post('/zodiac-mates', [FollowerController::class, 'store'])->name('zodiac-mates.store');
+
+    Route::post('/zodiac-mates/{id}/follow', [FollowerController::class, 'follow'])->name('zodiac-mates.follow');
+    Route::post('/zodiac-mates/{id}/unfollow', [FollowerController::class, 'unfollow'])->name('zodiac-mates.unfollow');
 
 });
 
