@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\ExpertController;
 use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\HoroscopeController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -32,6 +35,9 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::post('/update-pf', [ExpertController::class, 'create'])->name('expert.create');
+
+Route::post('/expert-register', [RegisteredUserController::class, 'expertStore'])->name('expert.register');
 
 
 Route::middleware('auth')->group(function () {
@@ -54,7 +60,9 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/zodiac-mates/{id}/follow', [FollowerController::class, 'follow'])->name('zodiac-mates.follow');
     Route::post('/zodiac-mates/{id}/unfollow', [FollowerController::class, 'unfollow'])->name('zodiac-mates.unfollow');
-
+    Route::post('/post/{id}/like', [LikeController::class, 'toggleLike'])->name('post.like');
 });
+
+
 
 require __DIR__.'/auth.php';

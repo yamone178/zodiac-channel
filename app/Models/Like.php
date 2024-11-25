@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Like extends Model
 {
     use HasFactory;
+
+    protected   $fillable = ['post_id', 'account_id'];
+
+    public function post()
+    {
+        return $this->belongsTo(Post::class);
+    }
 }

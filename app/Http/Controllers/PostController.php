@@ -19,7 +19,13 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::with(['zodiacs', 'account'])->get();
+        // $posts = Post::with(['zodiacs', 'account'])->get();
+        $posts = Post::whereIn('account_id', function($query){
+            $query->select('following_id')
+            ->from('followers')
+            ->where('account_id', Auth::id());
+
+        })->with(['zodiacs', 'account','likes'])->latest()->get();
 
         $zodiacs = Zodiac::all();
 
@@ -33,6 +39,7 @@ class PostController extends Controller
             }
         }
 
+        
       
        
         
@@ -56,7 +63,7 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        
+      
         $post = new Post();
 
         $post->caption = $request['caption'];
@@ -67,13 +74,14 @@ class PostController extends Controller
         $images = [];
 
         if ($request->hasFile('images')) {
-            foreach ($request['images'] as $key=>$image) {
+         
+            foreach ($request->file('images') as $image) {
                 $fileName = uniqid().$image->getClientOriginalName();
-               $img = $image->store('images/'.$fileName, 'public');
+                $image->storeAs('public/images', $fileName);
                 
                 // $image->move(public_path().'/images/',$fileName);
     
-                $images[] = $img;
+                $images[] = $fileName;
             }
         }
         $post->images = json_encode($images);
@@ -83,8 +91,11 @@ class PostController extends Controller
         $post->save();
 
         // save tagged zodiacs 
+
+        if ($request->has('tagged_zodiacs')) {
+            $post->zodiacs()->attach($request['tagged_zodiacs']);
+        }
         
-        $post->zodiacs()->attach($request['tagged_zodiacs']);
 
        
 

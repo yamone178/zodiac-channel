@@ -1,5 +1,5 @@
 import { useForm } from '@inertiajs/react'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { RiImageAddFill } from "react-icons/ri";
 import { IoIosClose } from "react-icons/io";
 
@@ -77,11 +77,16 @@ function submit(e) {
     const fileArray = [...files]
     
     
-    console.log(data.images);
+  //  useEffect(()=>{
+  //   console.log(data.images);
     
+  //  },[data.images])
+    const newImages = [...data.images, ...fileArray];
+    setData('images', newImages);
+
 
     const imagePromises = fileArray.map((file)=>{
-      setData('images', [...data.images, file]);
+      // setData('images', [...data.images, file]);
 
       return new Promise((resolve)=>{
         const reader = new FileReader();

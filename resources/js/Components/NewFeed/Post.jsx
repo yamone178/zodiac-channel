@@ -1,18 +1,37 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import testImg from '../../../../public/assets/images/test.jpg'
 import { TbZodiacTaurus } from "react-icons/tb";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { GoStar } from "react-icons/go";
+import { GoStar, GoStarFill  } from "react-icons/go";
 import { GoComment } from "react-icons/go";
-import { Link } from '@inertiajs/react';
+import { Link, useForm } from '@inertiajs/react';
+ import { router } from '@inertiajs/react'
 
 
 
 
 
-const Post = ({post, zodiacs}) => {
 
- 
+const Post = (props) => {
+
+    const zodiacs = props.zodiacs
+    const singlePost = props.post
+
+    const {data, setData, post, processing, errors } = useForm({
+               
+    })
+
+    const [like, setLike] = useState(false)
+
+    console.log(singlePost);
+
+    useEffect(()=>{
+        const isLiked = singlePost.likes.some(li => li.post_id === singlePost.id);
+
+            setLike(isLiked)
+    },[singlePost])
+    
+
    
    const findUserZodiac = () => {
         const findZodiac = zodiacs.filter((zodiac)=> zodiac.id == post.account.zodiac_id)
@@ -21,10 +40,19 @@ const Post = ({post, zodiacs}) => {
         return findZodiac.name
    }
 
+   const toggleLike = async (postId) =>{
+        setLike(!like)
+        
+        router.post(`post/${postId}/like`, 
+            { preserveScroll: true })
+   }    
+
    
 
   return (
-    <Link href={route('post.show',post.id)} className=' p-[35px] w-[550px]  bg-white border rounded-lg cursor-pointer'>
+    <div
+    //  href={route('post.show',post.id)} 
+     className=' p-[35px] w-[550px]  bg-white border rounded-lg '>
         <div className="flex items-center justify-between post-header">
             <div className="flex items-center gap-3 ">
                 <div className=" w-[41px] h-[41px] ">
@@ -33,10 +61,10 @@ const Post = ({post, zodiacs}) => {
                 </div>
 
                 <div className="">
-                    <p className=' text-[16px] font-semibold '>{post.account.name}</p>
+                    <p className=' text-[16px] font-semibold '>{singlePost.account.name}</p>
                     <p className=' text-[14px] flex items-center gap-1 text-main-bright font-semibold'>
                          {/* <TbZodiacTaurus /> */}
-                         {zodiacs.find((zodiac) => zodiac.id === post.account.zodiac_id)?.name || ''}  
+                         {zodiacs.find((zodiac) => zodiac.id === singlePost.account.zodiac_id)?.name || ''}  
                         
                     </p>
                 </div>
@@ -53,7 +81,7 @@ const Post = ({post, zodiacs}) => {
         <div className="post-content mt-[20px]">
             <div className=" w-full h-[250px] flex gap-1">
                     {
-                    post.images.map((img,index)=> <div key={index} className="w-full  h-[250px]">
+                    singlePost.images.map((img,index)=> <div key={index} className="w-full  h-[250px]">
                      <img src={img} alt="" className='object-cover w-full h-full rounded-lg' />
                      </div>
                      )
@@ -62,9 +90,28 @@ const Post = ({post, zodiacs}) => {
             </div>
 
             <div className="flex gap-8 mx-3 mt-3">
-                <button className='flex items-center ' variant="ghost" size="sm">
-                  <GoStar className="w-6 h-6 mr-2" />
-                  <span className=' text-[16px]'>Like</span> 
+                <button onClick={()=>toggleLike(singlePost.id)}
+                className='flex items-center ' variant="ghost" size="sm">
+                 
+                
+                    {
+                        like ? 
+                        <>
+                        
+                        <GoStarFill  className="w-6 h-6 mr-2  text-main-900" /> 
+                        <span className=' text-[16px]'>UnLike
+                        </span> 
+                         </>
+                        
+                        : 
+                        <>
+                        
+                        <GoStar  className="w-6 h-6 mr-2" /> 
+                        <span className=' text-[16px]'> Like
+                        </span> 
+                        </>
+                    }
+                   
                 </button>
                 {/* <div className="">
                    <GoStar className=' text-[27px]' />
@@ -79,7 +126,7 @@ const Post = ({post, zodiacs}) => {
             </div>
 
             <p className='mt-3 text-justify text-black/75'>
-                {post.caption}
+                {singlePost.caption}
                 <span className='text-black '> See More.....</span>
             </p> 
 
@@ -88,7 +135,7 @@ const Post = ({post, zodiacs}) => {
 
         
         
-    </Link>
+    </div>
   )
 }
 

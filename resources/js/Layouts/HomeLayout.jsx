@@ -40,7 +40,7 @@ const HomeLayout = ({user,   children}) => {
             <div  className="flex justify-between mt-[20px] mx-[4.5rem]">
                 
                <div>
-                 <SideCard showModal={showModal} user={auth.user.name}  zodiac={auth.user.zodiac?.name}/>    
+                 <SideCard showModal={showModal} user={auth.user}  zodiac={auth.user.zodiac?.name}/>    
                 </div> 
 
                 <div>

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Expert;
 use App\Http\Requests\StoreExpertRequest;
 use App\Http\Requests\UpdateExpertRequest;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ExpertController extends Controller
 {
@@ -19,9 +21,11 @@ class ExpertController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+       
+        $registerData = $request->data;
+       return Inertia::render('Auth/ExpertInfoForm', ['registerData'=> $registerData]);
     }
 
     /**

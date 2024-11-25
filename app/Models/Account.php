@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -62,5 +63,16 @@ class Account extends Authenticatable
     
     public function followings() {
         return $this->belongsToMany(Account::class, 'followers','account_id', 'following_id')->withTimestamps();
+    }
+
+    public function expert(): HasOne
+    {
+        return $this->hasOne(Expert::class);
+    }
+
+    public function normalUser():HasOne
+    {
+        return $this->hasOne(User::class);
+
     }
 }

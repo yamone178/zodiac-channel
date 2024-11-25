@@ -30,6 +30,11 @@ class Post extends Model
         return $this->belongsTo(Account::class);
     }
 
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
 
     public static function passImages($postImages)
     {
@@ -40,7 +45,7 @@ class Post extends Model
         
         // Convert each image path to a full URL
        return array_map(function ($imagePath) {
-            return asset('storage/' . trim($imagePath)); // Adjust path as needed
+            return asset('storage/images/' . trim($imagePath)); // Adjust path as needed
         }, $images);
         
     }
