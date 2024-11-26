@@ -4,7 +4,7 @@ import { TbZodiacTaurus } from "react-icons/tb";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { GoStar, GoStarFill  } from "react-icons/go";
 import { GoComment } from "react-icons/go";
-import { Link, useForm } from '@inertiajs/react';
+import { Link, useForm, usePage } from '@inertiajs/react';
  import { router } from '@inertiajs/react'
 
 
@@ -21,15 +21,21 @@ const Post = (props) => {
                
     })
 
-    const [like, setLike] = useState(false)
+    const {auth} = usePage().props
+
+    // const [like, setLike] = useState(false)
 
     console.log(singlePost);
 
-    useEffect(()=>{
-        const isLiked = singlePost.likes.some(li => li.post_id === singlePost.id);
+    // useEffect(()=>{
+        
+        console.log(auth);
+        
+        
+        const isLiked = singlePost.likes.some(li => li.account_id === auth.user.id && li.post_id === singlePost.id);
 
-            setLike(isLiked)
-    },[singlePost])
+    //         setLike(isLiked)
+    // },[singlePost])
     
 
    
@@ -40,11 +46,15 @@ const Post = (props) => {
         return findZodiac.name
    }
 
-   const toggleLike = async (postId) =>{
-        setLike(!like)
+   const toggleLike =  (postId) =>{   
+
+        // setLike(isLiked)
         
-        router.post(`post/${postId}/like`, 
+        post(`post/${postId}/like`, 
             { preserveScroll: true })
+
+            console.log(like);
+            
    }    
 
    
@@ -90,15 +100,16 @@ const Post = (props) => {
             </div>
 
             <div className="flex gap-8 mx-3 mt-3">
+            <p>{singlePost.id}</p>
                 <button onClick={()=>toggleLike(singlePost.id)}
                 className='flex items-center ' variant="ghost" size="sm">
                  
                 
                     {
-                        like ? 
+                        isLiked ? 
                         <>
                         
-                        <GoStarFill  className="w-6 h-6 mr-2  text-main-900" /> 
+                        <GoStarFill  className="w-6 h-6 mr-2 text-main-900" /> 
                         <span className=' text-[16px]'>UnLike
                         </span> 
                          </>

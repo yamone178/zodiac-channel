@@ -12,9 +12,15 @@ class LikeController extends Controller
 
     public function toggleLike($postId)
     {
+
+
+
+ 
         $like = Like::where('account_id', Auth::id())
                 ->where('post_id', $postId )->first();
 
+
+    
         if ($like) {
            $like->delete(); 
          
