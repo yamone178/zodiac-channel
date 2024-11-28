@@ -1,12 +1,14 @@
 <?php
 
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ExpertController;
 use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\HoroscopeController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -61,6 +63,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/zodiac-mates/{id}/follow', [FollowerController::class, 'follow'])->name('zodiac-mates.follow');
     Route::post('/zodiac-mates/{id}/unfollow', [FollowerController::class, 'unfollow'])->name('zodiac-mates.unfollow');
     Route::post('/post/{id}/like', [LikeController::class, 'toggleLike'])->name('post.like');
+
+    Route::post('/post/{id}/comment', [CommentController::class, 'store'])->name('comment.store');
+
+    Route::patch('/profile/update', [UserController::class, 'update'])->name('user.update');
+
 });
 
 

@@ -40,8 +40,13 @@ class HandleInertiaRequests extends Middleware
             $user->expert->profile_picture_url = asset('storage/images/' . $user->expert->profile_picture);
         }
 
+        if ($user && $user->normalUser) {
+            $user->normalUser->profile_picture_url = asset('storage/images/' . $user->normalUser->profile_picture);
+        }
+
         return [
             ...parent::share($request),
+            'appName' => config('app.name'),
             'auth' => [
                 'user' => $user
             ],

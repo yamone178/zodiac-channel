@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import testImg from '../../../../public/assets/images/test.jpg'
 import { TbZodiacTaurus } from "react-icons/tb";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -6,6 +6,8 @@ import { GoStar, GoStarFill  } from "react-icons/go";
 import { GoComment } from "react-icons/go";
 import { Link, useForm, usePage } from '@inertiajs/react';
  import { router } from '@inertiajs/react'
+import CommentBox from '../Comments/CommentBox';
+import { useOutsideClick } from '@/hooks/useOutsideClick';
 
 
 
@@ -24,6 +26,10 @@ const Post = (props) => {
     const {auth} = usePage().props
 
     // const [like, setLike] = useState(false)
+    const [likeCount , setLikeCount] = useState(0)
+    const [showCommentBox, setShowCommentBox] = useState(false)
+    const clickRef = useRef()
+
 
     console.log(singlePost);
 
@@ -36,6 +42,10 @@ const Post = (props) => {
 
     //         setLike(isLiked)
     // },[singlePost])
+
+    // useEffect(()=>{
+    //     console.log(singlePost.likes.length)
+    // }, [singlePost.likes])
     
 
    
@@ -57,7 +67,13 @@ const Post = (props) => {
             
    }    
 
+    useOutsideClick(clickRef, ()=>setShowCommentBox(false))
+
+
+//   useEffect(()=>{
+//   }, showCommentBox)
    
+ 
 
   return (
     <div
@@ -100,7 +116,7 @@ const Post = (props) => {
             </div>
 
             <div className="flex gap-8 mx-3 mt-3">
-            <p>{singlePost.id}</p>
+           
                 <button onClick={()=>toggleLike(singlePost.id)}
                 className='flex items-center ' variant="ghost" size="sm">
                  
@@ -110,7 +126,7 @@ const Post = (props) => {
                         <>
                         
                         <GoStarFill  className="w-6 h-6 mr-2 text-main-900" /> 
-                        <span className=' text-[16px]'>UnLike
+                        <span className=' text-[16px]'>{singlePost.likes.length}
                         </span> 
                          </>
                         
@@ -118,7 +134,7 @@ const Post = (props) => {
                         <>
                         
                         <GoStar  className="w-6 h-6 mr-2" /> 
-                        <span className=' text-[16px]'> Like
+                        <span className=' text-[16px]'> {singlePost.likes.length}
                         </span> 
                         </>
                     }
@@ -128,17 +144,20 @@ const Post = (props) => {
                    <GoStar className=' text-[27px]' />
                 </div> */}
                 <div className="">
-                    <button className='flex items-center ' variant="ghost" size="sm">
+                    <button onClick={()=>setShowCommentBox(true)} className='flex items-center ' variant="ghost" size="sm">
                         <GoComment className="w-6 h-6 mr-2"/>
                         <span className=' text-[16px]'>Comment</span> 
                     </button>
                      
+                     {
+                        showCommentBox && <CommentBox setShowCommentBox={setShowCommentBox} postId={singlePost.id} clickRef={clickRef}/> 
+                     }
                 </div>
             </div>
 
             <p className='mt-3 text-justify text-black/75'>
                 {singlePost.caption}
-                <span className='text-black '> See More.....</span>
+                <Link  href={route('post.show',singlePost.id)}  className='text-black '> See More.....</Link>
             </p> 
 
            

@@ -7,16 +7,19 @@ import Feed from '@/Components/NewFeed/Feed';
 import ExpertRecommend from '@/Components/ExpertRecommend';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
 import CreatePost from '@/Components/NewFeed/CreatePost';
+import UpdateProfileForm from '@/Pages/Profile/Partials/UpdateProfileForm';
 
 
-const HomeLayout = ({user,   children}) => {
+const HomeLayout = ({user, account,  children}) => {
 
     const { auth, zodiacs } = usePage().props;
 
     console.log(auth);
+    console.log(account);
     
     
     const [openModal, setOpenModal] = useState(false)
+    const [openUpdateForm, setOpenUpdateForm] = useState(false)
 
     const showModal = () =>{
         setOpenModal(true)
@@ -26,8 +29,18 @@ const HomeLayout = ({user,   children}) => {
         setOpenModal(false)
     }
 
+    const showUpdateForm = () => {
+        setOpenUpdateForm(true)
+    }
+
+    const closeUpdateForm = () =>{
+        setOpenUpdateForm(false)
+    }
+
     const clickRef = useRef()
     useOutsideClick(clickRef, ()=>setOpenModal(false))
+    useOutsideClick(clickRef, closeUpdateForm)
+
     
     return (
         <AuthenticatedLayout
@@ -40,7 +53,14 @@ const HomeLayout = ({user,   children}) => {
             <div  className="flex justify-between mt-[20px] mx-[4.5rem]">
                 
                <div>
-                 <SideCard showModal={showModal} user={auth.user}  zodiac={auth.user.zodiac?.name}/>    
+                 <SideCard 
+                  showModal={showModal}
+
+                  showUpdateForm = { showUpdateForm}
+                   user={auth.user} 
+                    zodiac={auth.user.zodiac?.name}
+                />    
+                
                 </div> 
 
                 <div>
@@ -52,6 +72,12 @@ const HomeLayout = ({user,   children}) => {
                 {
                         openModal && <CreatePost clickRef={clickRef} zodiacs={zodiacs} closeModal={closeModal}/>
                     }
+
+                
+                    {
+                        openUpdateForm && <UpdateProfileForm clickRef={clickRef} closeUpdateForm={closeUpdateForm}/>
+                    }
+              
               
                 
                

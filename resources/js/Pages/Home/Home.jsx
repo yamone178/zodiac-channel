@@ -10,7 +10,7 @@ import CreatePost from '@/Components/NewFeed/CreatePost';
 import HomeLayout from '@/Layouts/HomeLayout';
 
 
-const Home = ({posts, zodiacs}) => {
+const Home = ({ posts, zodiacs}) => {
 
     
     return (

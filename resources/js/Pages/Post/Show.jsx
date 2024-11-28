@@ -8,15 +8,19 @@ import { GoStar } from "react-icons/go";
 import { GoComment } from "react-icons/go";
 import { Link, usePage } from '@inertiajs/react';
 import HomeLayout from '@/Layouts/HomeLayout';
+import AllComments from '@/Components/Comments/AllComments';
 
 const Show = ({post}) => {
+
+    console.log(post);
+    
    
     const {zodiacs} = usePage().props;
     
     return (
      
         <HomeLayout>
-            <div className=' p-[35px] w-[550px]  bg-gray-200 rounded-lg cursor-pointer'>
+            <div className=' p-[35px] w-[550px]  bg-white rounded-lg cursor-pointer'>
                 <div className="flex items-center justify-between post-header">
                     <div className="flex items-center gap-3 ">
                         <div className=" w-[41px] h-[41px] ">
@@ -60,7 +64,7 @@ const Show = ({post}) => {
 
                     <p className='mt-3 text-justify text-black/75'>
                         {post.caption}
-                        <span className='text-black '> See More.....</span>
+                      
                     </p> 
 
                     
@@ -69,6 +73,8 @@ const Show = ({post}) => {
 
 
                 </div>
+
+                <AllComments comments={post.comments} />
 
             </HomeLayout>
    

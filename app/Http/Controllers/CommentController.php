@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\UpdateCommentRequest;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class CommentController extends Controller
 {
@@ -13,7 +15,9 @@ class CommentController extends Controller
      */
     public function index()
     {
-        //
+        // $comments = Comment::with(['post', 'account'])->latest()->get();
+
+        // return Inertia::render('Post/Show', ['comments']);
     }
 
     /**
@@ -29,7 +33,13 @@ class CommentController extends Controller
      */
     public function store(StoreCommentRequest $request)
     {
-        //
+       Comment::create([
+        'comment' => $request->comment,
+        'post_id' => $request->post_id,
+        'account_id' => Auth::id()
+       ]);
+
+       return redirect()->back();
     }
 
     /**

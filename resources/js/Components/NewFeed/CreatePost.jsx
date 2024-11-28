@@ -103,7 +103,7 @@ function submit(e) {
 
 
   return (
-    <div className="absolute h-screen overflow-hidden top-0 left-0  z-10 bg-[#8080807d] w-[100%]">
+    <div className="fixed h-screen overflow-hidden top-0 left-0  z-10 bg-[#8080807d] w-[100%]">
         <form ref={clickRef} onSubmit={submit} 
         className='bg-white h-min top-0 bottom-0 m-auto left-0 inline-block right-0 w-[600px] p-[20px] absolute border-2 shadow-md rounded-xl'>
      

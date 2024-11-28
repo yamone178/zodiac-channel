@@ -4,18 +4,29 @@ import { TbZodiacLeo } from "react-icons/tb";
 import { FiPlusCircle } from "react-icons/fi";
 import BtnConnections from './BtnConnections';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
+// import { LiaEdit } from "react-icons/lia";
+import { AiTwotoneEdit } from "react-icons/ai";
+
 import profile from '../../../public/assets/images/profile-image.jpg'
 
 
 
-const SideCard = ({user, zodiac, showModal}) => {
+const SideCard = ({user, zodiac, showModal, showUpdateForm}) => {
 
-  console.log(user.expert);
+  console.log(user);
+
+  const [pf, setPf] = useState(profile)
 
   
+  useEffect(() => {
+    const profilePicture =
+      user.role === 'user'
+        ? user.normal_user?.profile_picture_url || profile
+        : user.expert?.profile_picture_url || profile;
 
+    setPf(profilePicture);
+  }, );
   
-  const profile_picture = user.expert ? user.expert.profile_picture_url : profile
   
   const clickRef = useRef()
   
@@ -23,14 +34,21 @@ const SideCard = ({user, zodiac, showModal}) => {
   return (
     <div ref={clickRef} className="py-8 w-[280px] bg-white border  rounded-lg flex sticky top-[105px] justify-center">
          <div className=""> 
-        <div className=" w-[100px] h-[100px]  mx-auto  ">
-            <img src={profile_picture} alt="" className='object-cover w-full h-full rounded-full '/>
+        <div className=" w-[100px] h-[100px]  mx-auto  relative ">
+            <img src={pf} alt="" className='object-cover w-full h-full rounded-full '/>
+
+            <div  onClick={showUpdateForm} className="absolute bottom-0 right-0 p-1 bg-white border rounded-full cursor-pointer border-main-900 hover:bg-main-900">
+               <AiTwotoneEdit className=' text-[20px] text-main-900  hover:text-white ' />
+
+            </div>
         </div>
         {
-          user.normalUser == null  && user.expert == null &&
+          pf == profile &&
             <>
-              <div className="font-semibold text-red-700 rounded-lg cursor-pointer ">
-              Please Update Your Profile !
+              <div 
+              onClick={showUpdateForm}
+              className="font-semibold text-red-700 rounded-lg cursor-pointer ">
+                 Please Update Your Profile !
             </div>
             </>
 

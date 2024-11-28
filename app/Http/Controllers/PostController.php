@@ -111,7 +111,7 @@ class PostController extends Controller
     {
 
 
-        $post = Post::with(['zodiacs', 'account'])->find($id);
+        $post = Post::with(['zodiacs', 'account', 'comments.account.normalUser', 'comments.account.expert'])->find($id);
 
         if ($post['images']) {
             // Split the comma-separated string into an array
