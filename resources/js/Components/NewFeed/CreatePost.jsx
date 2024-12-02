@@ -39,7 +39,7 @@ function submit(e) {
     post(route('post.store'),{
       data: formData,
       forceFormData: true,
-      
+  
     })
 
     

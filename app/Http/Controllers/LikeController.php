@@ -32,7 +32,7 @@ class LikeController extends Controller
             ]);           
         }
 
-        return redirect()->back();
+        return back();
     }
     /**
      * Display a listing of the resource.

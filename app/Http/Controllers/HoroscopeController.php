@@ -11,7 +11,7 @@ class HoroscopeController extends Controller
     {
         try {
             $response = Http::get("https://horoscope-app-api.vercel.app/api/v1/get-horoscope/daily", [
-                'sign' => 'virgo',
+                'sign' => 'leo',
                 'day' => 'TODAY'
             ]);
 

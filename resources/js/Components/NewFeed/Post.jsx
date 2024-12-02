@@ -5,19 +5,17 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { GoStar, GoStarFill  } from "react-icons/go";
 import { GoComment } from "react-icons/go";
 import { Link, useForm, usePage } from '@inertiajs/react';
- import { router } from '@inertiajs/react'
+ import {  router } from '@inertiajs/react'
 import CommentBox from '../Comments/CommentBox';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
-
-
-
-
+import profile from '../../.../../../../public/assets/images/profile-image.jpg'
 
 
 const Post = (props) => {
 
     const zodiacs = props.zodiacs
     const singlePost = props.post
+
 
     const {data, setData, post, processing, errors } = useForm({
                
@@ -28,52 +26,67 @@ const Post = (props) => {
     // const [like, setLike] = useState(false)
     const [likeCount , setLikeCount] = useState(0)
     const [showCommentBox, setShowCommentBox] = useState(false)
+
+    const [pf, setPf] = useState(profile)
+
+    const user = singlePost.account
+
+    console.log(user);
+    
+  
+    useEffect(() => {
+  
+      const profilePicture =
+        user.role === 'user'
+          ? user.normal_user?.profile_picture ? user.normal_user?.profile_picture : profile
+          : user.expert?.profile_picture ? user.expert?.profile_picture : profile
+  
+      setPf(profilePicture);
+    });
+
+    console.log(pf);
+    
+    
     const clickRef = useRef()
-
-
-    console.log(singlePost);
-
-    // useEffect(()=>{
-        
-        console.log(auth);
-        
+  
         
         const isLiked = singlePost.likes.some(li => li.account_id === auth.user.id && li.post_id === singlePost.id);
 
-    //         setLike(isLiked)
-    // },[singlePost])
-
-    // useEffect(()=>{
-    //     console.log(singlePost.likes.length)
-    // }, [singlePost.likes])
-    
 
    
    const findUserZodiac = () => {
-        const findZodiac = zodiacs.filter((zodiac)=> zodiac.id == post.account.zodiac_id)
-
-        
+        const findZodiac = zodiacs.filter((zodiac)=> zodiac.id == post.account.zodiac_id)      
         return findZodiac.name
    }
 
-   const toggleLike =  (postId) =>{   
-
-        // setLike(isLiked)
+   
+   const toggleLike = async (postId) =>{   
+        // setLike(isLiked)     
         
-        post(`post/${postId}/like`, 
-            { preserveScroll: true })
+        const scrollPosition = window.scrollY;
 
-            console.log(like);
+        console.log(scrollPosition);
+        
+          
+        try {
+            router.post(
+                route('post.like', postId),
+                {}, 
+                {
+                    preserveState: true,
+                    preserveScroll: true,
+                    
+                }
+            );
+        } catch (error) {
+            console.error('Unexpected error:', error);
+        }
+        
             
    }    
 
     useOutsideClick(clickRef, ()=>setShowCommentBox(false))
 
-
-//   useEffect(()=>{
-//   }, showCommentBox)
-   
- 
 
   return (
     <div
@@ -82,7 +95,7 @@ const Post = (props) => {
         <div className="flex items-center justify-between post-header">
             <div className="flex items-center gap-3 ">
                 <div className=" w-[41px] h-[41px] ">
-                <img src={testImg} alt="" className='object-cover w-full h-full rounded-full' />
+                <img src={pf} alt="" className='object-cover w-full h-full rounded-full' />
                   
                 </div>
 
@@ -107,7 +120,7 @@ const Post = (props) => {
         <div className="post-content mt-[20px]">
             <div className=" w-full h-[250px] flex gap-1">
                     {
-                    singlePost.images.map((img,index)=> <div key={index} className="w-full  h-[250px]">
+                    singlePost.images.map((img,index)=> <div key={`${singlePost.id}-${index}`} className="w-full  h-[250px]">
                      <img src={img} alt="" className='object-cover w-full h-full rounded-lg' />
                      </div>
                      )

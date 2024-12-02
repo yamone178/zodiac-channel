@@ -54,6 +54,10 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        $normalUser = new User();
+        $normalUser->account_id = $user->id;
+        $normalUser->save();
+
         $user->load('zodiac');
 
         event(new Registered($user));
@@ -72,20 +76,6 @@ class RegisteredUserController extends Controller
     // Extracting data from the request
     $results = $request->data;
 
-    // dd($results['name']);
-
-    // Validating the input data
-    // $request->validate([
-    //     'data.name' => 'required|string|max:255',
-    //     'data.email' => 'required|string|email|max:255|unique:accounts,email',
-    //     'data.role' => 'required|string',
-    //     'data.password' => ['required', 'confirmed', Rules\Password::defaults()],
-    //     'data.bio' => 'nullable|string',
-    //     'data.about_me' => 'nullable|string',
-    //     'data.expertise' => 'nullable|string',
-    //     'data.dob' => 'nullable|date',
-    //     // 'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Profile picture validation
-    // ]);
 
     DB::beginTransaction();
 

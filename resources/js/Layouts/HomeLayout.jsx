@@ -14,9 +14,6 @@ const HomeLayout = ({user, account,  children}) => {
 
     const { auth, zodiacs } = usePage().props;
 
-    console.log(auth);
-    console.log(account);
-    
     
     const [openModal, setOpenModal] = useState(false)
     const [openUpdateForm, setOpenUpdateForm] = useState(false)

@@ -19,10 +19,11 @@ const SideCard = ({user, zodiac, showModal, showUpdateForm}) => {
 
   
   useEffect(() => {
+
     const profilePicture =
       user.role === 'user'
-        ? user.normal_user?.profile_picture_url || profile
-        : user.expert?.profile_picture_url || profile;
+        ? user.normal_user?.profile_picture ? user.normal_user?.profile_picture_url : profile
+        : user.expert?.profile_picture ? user.expert?.profile_picture_url : profile
 
     setPf(profilePicture);
   }, );

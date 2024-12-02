@@ -1,4 +1,4 @@
-import { useForm } from '@inertiajs/react';
+import { useForm, usePage } from '@inertiajs/react';
 import React from 'react'
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
@@ -14,22 +14,36 @@ const UpdateProfileForm = ({clickRef, closeUpdateForm}) => {
         profile_picture: '',
         dob: '',
         bio: '',
+        expertise:'',
+        about_me: ''
     });
 
     console.log(data);
-    
+
+    const {auth} = usePage().props
+   
     
 
     const submit = (e) => {
         e.preventDefault();
 
         console.log(data);
+     
         
+        if(auth.user.role == 'user')
+        {
+            router.post(route('user.update'),{
+                _method: 'patch',
+                data: data
+            });
+        }else{
+            router.post(route('expert.update'),{
+                _method: 'patch',
+                data: data
+            });
+        }
 
-        router.post(route('user.update'),{
-            _method: 'patch',
-            data: data
-        });
+       
       
         closeUpdateForm()
 
@@ -90,6 +104,46 @@ const UpdateProfileForm = ({clickRef, closeUpdateForm}) => {
 
                     <InputError message={errors.bio} className="mt-2" />
                 </div>
+
+                {
+                    
+                    auth.user.role == 'expert' &&
+                    <>
+                    <div>
+                    <InputLabel htmlFor="bio" value="about_me" />
+
+                    <textarea
+                        id="about_me"
+                        name="about_me"
+                        value={data.about_me}
+                        className="block w-full mt-1"
+                    
+                        onChange={(e) => setData('about_me', e.target.value)}
+                     
+                    > </textarea>
+
+                    <InputError message={errors.bio} className="mt-2" />
+                </div>
+
+                  <div>
+                    <InputLabel htmlFor="expertise" value="expertise" />
+
+                    <input
+                        id="expertise"
+                        name="expertise"
+                       
+                        className="block w-full mt-1"
+                        type='text'
+                        onChange={(e) => setData('expertise', e.target.value)}
+                       
+                    />
+
+                    <InputError message={errors.profile_picture} className="mt-2" />
+                </div>
+               </> 
+
+
+                }
                 
               
 

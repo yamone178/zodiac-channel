@@ -19,33 +19,60 @@ class PostController extends Controller
      */
     public function index()
     {
-        // $posts = Post::with(['zodiacs', 'account'])->get();
-        $posts = Post::whereIn('account_id', function($query){
+        
+        // Fetch posts with relevant relationships
+        $posts = Post::whereIn('account_id', function ($query) {
             $query->select('following_id')
-            ->from('followers')
-            ->where('account_id', Auth::id());
-
-        })->with(['zodiacs', 'account','likes'])->latest()->get();
-
+                ->from('followers')
+                ->where('account_id', Auth::id());
+        })
+        ->orWhere('account_id', Auth::id())
+        ->with(['zodiacs', 'account', 'likes', 'account.normalUser', 'account.expert'])
+        ->latest()
+        ->get();
+    
+        // Fetch all zodiacs
         $zodiacs = Zodiac::all();
 
-        foreach ($posts as $post) {
-            if ($post['images']) {
-                
-               $post['images'] = Post::passImages($post['images']);
-            } else {
-                // Set images to an empty array if none are available
-                $post['images'] = [];
-            }
-        }
-
-        
-      
        
+    
+        // Process posts
+        $processedPosts = $posts->map(function ($post) {
+            // // Process normal user profile picture
+            if ($profilePicture = $post->account->normalUser?->profile_picture) {
+                $pathInfo = pathinfo($profilePicture);
+                //dd($pathInfo);
+                $filename = $pathInfo['basename'];
+    
+                $post->account->normalUser->profile_picture = asset('storage/images/' . $filename);
+            }
         
-        return Inertia::render('Home/Home', ['posts'=>$posts, 'zodiacs'=> $zodiacs]);
-    }
+            // Process expert profile picture if normal user's picture is not available
+            if (!$profilePicture && $expertPicture = $post->account->expert?->profile_picture) {
+                $pathInfo = pathinfo($expertPicture);
+                //dd($pathInfo);
+                $filename = $pathInfo['basename'];
+    
+                $post->account->expert->profile_picture = asset('storage/images/' . $filename);
+            }
+        
+            // Process images
+            $post['images'] = $post['images'] 
+                ? Post::passImages($post['images']) 
+                : [];
+        
+              
+            return $post; // Return the processed post
+        });
 
+      //  dd($processedPosts); //"http://127.0.0.1:8000/storage/images/http://127.0.0.1:8000/storage/images/674b31ff127e9Passport Photo.jpg" for each post
+    
+        // Return the data to the view
+        return Inertia::render('Home/Home', [
+            'posts' => $processedPosts,
+            'zodiacs' => $zodiacs,
+        ]);
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -111,7 +138,7 @@ class PostController extends Controller
     {
 
 
-        $post = Post::with(['zodiacs', 'account', 'comments.account.normalUser', 'comments.account.expert'])->find($id);
+        $post = Post::with(['zodiacs', 'likes', 'account', 'comments.account.normalUser', 'comments.account.expert'])->find($id);
 
         if ($post['images']) {
             // Split the comma-separated string into an array

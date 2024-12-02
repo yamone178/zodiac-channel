@@ -11,7 +11,7 @@ class UserController extends Controller
     public function update(Request $request)
     {
 
-        $userAccount = Auth::user()->normalUser;
+        $userAccount = Auth::user()->normalUser; //normalUser
 
         $user = User::where('id', $userAccount->id)->first();
 

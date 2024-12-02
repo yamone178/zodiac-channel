@@ -14,10 +14,11 @@ const Home = ({ posts, zodiacs}) => {
 
     
     return (
-       
+         
             <HomeLayout>
               <Feed posts={posts} zodiacs={zodiacs} />
             </HomeLayout>
+       
     );
 }
 

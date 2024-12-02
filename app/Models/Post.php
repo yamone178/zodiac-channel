@@ -55,4 +55,15 @@ class Post extends Model
         }, $images);
         
     }
+
+    public static function passOneImage($postImage)
+    {
+        // Check if the image is already a full URL
+        if (filter_var($postImage, FILTER_VALIDATE_URL)) {
+            return $postImage;
+        }
+    
+        // Generate the asset URL
+        return asset('storage/images/' . $postImage);
+    }
 }
