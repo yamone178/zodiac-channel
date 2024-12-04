@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import testImg from '../../../../public/assets/images/test.jpg'
 import { GoPlus } from "react-icons/go";
 import { useForm, usePage } from '@inertiajs/react';
+import profile from '../../../../public/assets/images/profile-image.jpg'
 
 
 
@@ -14,7 +15,7 @@ const SuggestCard = ({mate}) => {
     const { followings ,auth, zodiacs , added} = usePage().props;
 
     const [follow, setFollow] = useState() 
-
+    const [pf, setPf] = useState()
    
 
     console.log(added)
@@ -27,9 +28,17 @@ const SuggestCard = ({mate}) => {
 
        setFollow(isAlreadyFollowing)
         console.log(isAlreadyFollowing);
-        
-    },[followings])
 
+        const profilePicture =
+        mate.role === 'user'
+          ? mate.normal_user?.profile_picture ? mate.normal_user?.profile_picture : profile
+          : mate.expert?.profile_picture ? mate.expert?.profile_picture : profile
+  
+      setPf(profilePicture);
+        
+    },[followings, mate])
+
+   
     
     
     // friends.map((fri)=> )
@@ -63,7 +72,7 @@ const SuggestCard = ({mate}) => {
   return (
     <div className='flex items-center gap-3 p-5 border rounded-lg bg-main-bg border-main-bright'>
         <div className=" w-[60px] h-[60px] ">
-            <img src={testImg} className='object-cover w-full h-full rounded-full' alt="" />
+            <img src={pf} className='object-cover w-full h-full rounded-full' alt="" />
         </div>
 
         <div className="">
