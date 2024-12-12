@@ -68,7 +68,7 @@ const HomeLayout = ({user, account,  children}) => {
                 
                 {
                         openModal && <CreatePost clickRef={clickRef} zodiacs={zodiacs} closeModal={closeModal}/>
-                    }
+                }
 
                 
                     {

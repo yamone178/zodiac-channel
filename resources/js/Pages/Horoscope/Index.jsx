@@ -3,7 +3,7 @@ import { usePage } from '@inertiajs/react';
 import HomeLayout from '@/Layouts/HomeLayout';
 
 
-const Index = ({result}) => {
+const Index = ({result, name}) => {
 
     const { auth, zodiacs } = usePage().props;
 
@@ -30,7 +30,7 @@ const Index = ({result}) => {
               </div>
 
               <div className="flex justify-between mt-8">
-                <p className='font-bold text-main-bright '>Leo</p>
+                <p className='font-bold text-main-bright '>{name}</p>
                 <h4 className=''>Date -  {result.date}</h4>
               </div>
 

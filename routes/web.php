@@ -43,9 +43,11 @@ Route::post('/expert-register', [RegisteredUserController::class, 'expertStore']
 
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+  
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+ 
 
     // Route::get('/home', function () {
     //     return Inertia::render('Home/Home');
@@ -54,6 +56,10 @@ Route::middleware('auth')->group(function () {
     // Route::get('/home/post', [PostController::class, 'create'])->name('post.create');
     Route::post('/home', [PostController::class, 'store'])->name('post.store');
     Route::get('/post/{id}', [PostController::class, 'show'])->name('post.show');
+    Route::get('/posts', [PostController::class, 'allposts'])->name('post.index');
+    Route::patch('/post/{id}', [PostController::class, 'update'])->name('post.update');
+    Route::delete('/post/{id}', [PostController::class, 'destroy'])->name('post.delete');
+
 
     Route::get('/horoscope',[HoroscopeController::class, 'index'])->name('horoscope');
     Route::get('/zodiac-mates',[FollowerController::class, 'create'])->name('zodiac-mate');
@@ -68,6 +74,8 @@ Route::middleware('auth')->group(function () {
 
     Route::patch('/profile/update', [UserController::class, 'update'])->name('user.update');
     Route::patch('/expert/update', [ExpertController::class, 'update'])->name('expert.update');
+
+    Route::get('/profile/view', [ProfileController::class, 'view'])->name('profile.view');
 
 });
 

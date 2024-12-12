@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use App\Models\Comment;
+use App\Models\Like;
 use App\Models\Zodiac;
+use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -14,6 +18,7 @@ use function PHPSTORM_META\map;
 
 class PostController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      */
@@ -32,47 +37,33 @@ class PostController extends Controller
         ->get();
     
         // Fetch all zodiacs
-        $zodiacs = Zodiac::all();
-
-       
-    
+        $zodiacs = Zodiac::all();    
         // Process posts
         $processedPosts = $posts->map(function ($post) {
-            // // Process normal user profile picture
-            if ($profilePicture = $post->account->normalUser?->profile_picture) {
-                $pathInfo = pathinfo($profilePicture);
-                //dd($pathInfo);
-                $filename = $pathInfo['basename'];
-    
-                $post->account->normalUser->profile_picture = asset('storage/images/' . $filename);
-            }
-        
-            // Process expert profile picture if normal user's picture is not available
-            if (!$profilePicture && $expertPicture = $post->account->expert?->profile_picture) {
-                $pathInfo = pathinfo($expertPicture);
-                //dd($pathInfo);
-                $filename = $pathInfo['basename'];
-    
-                $post->account->expert->profile_picture = asset('storage/images/' . $filename);
-            }
-        
-            // Process images
-            $post['images'] = $post['images'] 
-                ? Post::passImages($post['images']) 
-                : [];
-        
-              
-            return $post; // Return the processed post
+            return Post::passProfileImage($post); // Return the processed post
         });
 
-      //  dd($processedPosts); //"http://127.0.0.1:8000/storage/images/http://127.0.0.1:8000/storage/images/674b31ff127e9Passport Photo.jpg" for each post
-    
-        // Return the data to the view
         return Inertia::render('Home/Home', [
             'posts' => $processedPosts,
             'zodiacs' => $zodiacs,
         ]);
     }
+
+
+
+    public function allPosts()
+    {
+        $posts = Post::where('account_id', Auth::id())
+        ->with(['zodiacs', 'account', 'likes', 'comments', 'account.normalUser', 'account.expert'])
+        ->latest()
+        ->get();
+    
+        $processedPosts = $posts->map(function ($post) {
+            return Post::passProfileImage($post); // Return the processed post
+        });
+        return Inertia::render('Post/AllPost', ['posts'=> $processedPosts]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -90,12 +81,9 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-      
         $post = new Post();
 
         $post->caption = $request['caption'];
-
-
         // Save image
         
         $images = [];
@@ -122,11 +110,7 @@ class PostController extends Controller
         if ($request->has('tagged_zodiacs')) {
             $post->zodiacs()->attach($request['tagged_zodiacs']);
         }
-        
-
-       
-
-      
+           
         return redirect()->route('home');
 
     }
@@ -138,18 +122,18 @@ class PostController extends Controller
     {
 
 
-        $post = Post::with(['zodiacs', 'likes', 'account', 'comments.account.normalUser', 'comments.account.expert'])->find($id);
+        $post = Post::with(['zodiacs', 'likes', 'account', 'account.normalUser', 'account.expert', 'comments.account.normalUser', 'comments.account.expert'])->find($id);
 
-        if ($post['images']) {
-            // Split the comma-separated string into an array
-           
-           $post['images'] = Post::passImages($post['images']);
-        } else {
-            // Set images to an empty array if none are available
-            $post['images'] = [];
-        }
-       
-        return Inertia::render('Post/Show', ['post'=>$post]);
+        $processedPost = Post::passProfileImage($post);
+
+        $comments = $processedPost->comments;
+        $processedPost->comments = $comments->map(function ($comment) {
+            return Post::passProfileImage($comment); // Return the processed post
+        });
+
+      
+      
+        return Inertia::render('Post/Show', ['post'=>$processedPost]);
     }
 
     /**
@@ -157,22 +141,85 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePostRequest $request, Post $post)
+    public function update(Request $request, $id)
     {
-        //
+        $post = Post::where('id', $id)->first();
+        $post->caption = $request->data['caption'];
+    
+        // Decode the old images from the database
+        $oldImages = json_decode($post->images, true) ?: []; // Ensure it's an array
+        $updatedImages = $oldImages;
+    
+        // Handle deletion of images
+        if (!empty($request->data['del_images'])) {
+            $delImagesIndex = $request->data['del_images'];
+    
+            // Remove images by their indices
+            $updatedImages = array_filter($updatedImages, function ($key) use ($delImagesIndex) {
+                return !in_array($key, $delImagesIndex);
+            }, ARRAY_FILTER_USE_KEY);
+    
+            // Reindex the array
+            $updatedImages = array_values($updatedImages);
+        }
+    
+        // Handle new images from the request
+        if ($request->hasFile('data.images')) {
+            foreach ($request->file('data.images') as $image) {
+                if ($this->isPrivateUrl($image)) {
+                    // Handle private URL logic if necessary
+                    $updatedImages[] = $image;
+                } else {
+                    // Save new image to storage
+                    $fileName = uniqid() . $image->getClientOriginalName();
+                    $image->storeAs('public/images', $fileName);
+                    $updatedImages[] = $fileName;
+                }
+            }
+        }
+    
+        // Update the post's images with the final array
+        $post->images = json_encode($updatedImages);
+    
+        // Update the account ID and save the post
+        $post->account_id = Auth::id();
+        $post->save();
+    
+        // Sync tagged zodiacs if provided
+        if (!empty($request->data['tagged_zodiacs'])) {
+            $post->zodiacs()->sync($request->data['tagged_zodiacs']);
+        }
+    
+        return redirect()->back()->with('success', 'Post updated successfully!');
+    }
+    
+
+    private function isPrivateUrl($image)
+    {
+        return filter_var($image, FILTER_VALIDATE_URL);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Post $post)
+    public function destroy($id)
     {
-        //
+      
+        $post = Post::findOrFail($id);
+
+        if ($post) {
+            Like::where('post_id', $post->id)?->delete();
+            Comment::where('post_id', $post->id)?->delete();
+            $post->delete();
+        }
+      
+
+
+        return redirect()->back();
     }
 }

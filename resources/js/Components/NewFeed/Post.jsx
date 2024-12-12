@@ -42,7 +42,7 @@ const Post = (props) => {
           : user.expert?.profile_picture ? user.expert?.profile_picture : profile
   
       setPf(profilePicture);
-    });
+    }, [singlePost]);
 
     console.log(pf);
     
