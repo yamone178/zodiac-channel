@@ -8,6 +8,7 @@ import { useOutsideClick } from '@/hooks/useOutsideClick';
 import { AiTwotoneEdit } from "react-icons/ai";
 
 import profile from '../../../public/assets/images/profile-image.jpg'
+import ImageCard from './ImageCard';
 
 
 
@@ -35,14 +36,9 @@ const SideCard = ({user, zodiac, showModal, showUpdateForm}) => {
   return (
     <div ref={clickRef} className="py-8 w-[280px] bg-white border  rounded-lg flex sticky top-[105px] justify-center">
          <div className=""> 
-        <div className=" w-[100px] h-[100px]  mx-auto  relative ">
-            <img src={pf} alt="" className='object-cover w-full h-full rounded-full '/>
-
-            <div  onClick={showUpdateForm} className="absolute bottom-0 right-0 p-1 bg-white border rounded-full cursor-pointer border-main-900 hover:bg-main-900">
-               <AiTwotoneEdit className=' text-[20px] text-main-900  hover:text-white ' />
-
-            </div>
-        </div>
+          <ImageCard className="mx-auto"
+           pf={pf} showUpdateForm={showUpdateForm}/>
+       
         {
           pf == profile &&
             <>

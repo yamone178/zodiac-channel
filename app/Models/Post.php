@@ -51,7 +51,8 @@ class Post extends Model
         
         // Convert each image path to a full URL
        return array_map(function ($imagePath) {
-            return asset('storage/images/' . trim($imagePath)); // Adjust path as needed
+           
+            return asset('storage/images/'.trim($imagePath)); // Adjust path as needed
         }, $images);
         
     }
@@ -65,5 +66,35 @@ class Post extends Model
     
         // Generate the asset URL
         return asset('storage/images/' . $postImage);
+    }
+
+    public static function passProfileImage($post){
+        if ($profilePicture = $post->account->normalUser?->profile_picture) {
+            $pathInfo = pathinfo($profilePicture);
+            //dd($pathInfo);
+            $filename = $pathInfo['basename'];
+
+             $post->account->normalUser->profile_picture = asset('storage/images/' . $filename);
+        }
+    
+        // Process expert profile picture if normal user's picture is not available
+        if (!$profilePicture && $expertPicture = $post->account->expert?->profile_picture) {
+            $pathInfo = pathinfo($expertPicture);
+            //dd($pathInfo);
+            $filename = $pathInfo['basename'];
+
+            $post->account->expert->profile_picture = asset('storage/images/' . $filename);
+        }
+
+        if ($post['images']) {
+            $post['images'] = $post['images'] 
+            ? self::passImages($post['images']) 
+            : [];
+        }
+
+       
+
+
+        return $post;
     }
 }

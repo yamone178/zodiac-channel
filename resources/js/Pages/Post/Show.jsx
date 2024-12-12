@@ -13,7 +13,6 @@ import Post from '@/Components/NewFeed/Post';
 
 const Show = ({post}) => {
 
-    console.log(post);
     
    
     const {zodiacs} = usePage().props;
@@ -24,7 +23,12 @@ const Show = ({post}) => {
           
                 <Post zodiacs={zodiacs} post={post}/>
 
-                <AllComments comments={post.comments} />
+                {
+                    post.comments.map((comment)=>
+                          <AllComments key={comment.id} comment={comment} />
+                )
+                }
+
 
             </HomeLayout>
    

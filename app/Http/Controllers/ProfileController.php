@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Post;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -13,6 +14,21 @@ use Inertia\Response;
 
 class ProfileController extends Controller
 {
+
+    
+    public function view()
+    {
+        $posts = Post::where('account_id', Auth::id())
+        ->with(['zodiacs', 'account', 'likes', 'comments', 'account.normalUser', 'account.expert'])
+        ->latest()
+        ->get();
+    
+
+        $processedPosts = $posts->map(function ($post) {
+            return Post::passProfileImage($post); // Return the processed post
+        });
+        return Inertia::render('Profile/Profile', ['posts'=> $processedPosts]);
+    }
     /**
      * Display the user's profile form.
      */
@@ -29,6 +45,8 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
+        
+
         $request->user()->fill($request->validated());
 
         if ($request->user()->isDirty('email')) {
