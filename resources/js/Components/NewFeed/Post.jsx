@@ -9,12 +9,21 @@ import { Link, useForm, usePage } from '@inertiajs/react';
 import CommentBox from '../Comments/CommentBox';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
 import profile from '../../.../../../../public/assets/images/profile-image.jpg'
+import DateFormat from '../DateFormat';
+import { useLimitedWords } from '@/hooks/useLimitedWord';
+import Slider from '../Slider';
 
 
 const Post = (props) => {
 
     const zodiacs = props.zodiacs
     const singlePost = props.post
+    const pathName = window.location.pathname
+
+    console.log(pathName);
+    
+
+    
 
 
     const {data, setData, post, processing, errors } = useForm({
@@ -63,11 +72,7 @@ const Post = (props) => {
    const toggleLike = async (postId) =>{   
         // setLike(isLiked)     
         
-        const scrollPosition = window.scrollY;
-
-        console.log(scrollPosition);
-        
-          
+       
         try {
             router.post(
                 route('post.like', postId),
@@ -92,15 +97,27 @@ const Post = (props) => {
     <div
     //  href={route('post.show',post.id)} 
      className=' p-[35px] w-[550px]  bg-white border rounded-lg '>
-        <div className="flex items-center justify-between post-header">
+        <div className="flex items-center justify-between mb-3 post-header">
             <div className="flex items-center gap-3 ">
                 <div className=" w-[41px] h-[41px] ">
                 <img src={pf} alt="" className='object-cover w-full h-full rounded-full' />
                   
                 </div>
 
+                
+               
+              
+
                 <div className="">
-                    <p className=' text-[16px] font-semibold '>{singlePost.account.name}</p>
+                    <Link href={route('account.view',singlePost.account.id)} className=' text-[16px] font-semibold flex items-center gap-1 '>
+                        {singlePost.account.name}
+
+                        {
+                            user.role == 'expert' &&
+                            <GoStarFill className='font-normal text-main-900' />
+                        }
+                        
+                    </Link>
                     <p className=' text-[14px] flex items-center gap-1 text-main-bright font-semibold'>
                          {/* <TbZodiacTaurus /> */}
                          {zodiacs.find((zodiac) => zodiac.id === singlePost.account.zodiac_id)?.name || ''}  
@@ -109,7 +126,8 @@ const Post = (props) => {
                 </div>
             </div>
 
-            <div className="">
+            <div className="flex gap-3">
+                 <DateFormat initialTimeStamp={singlePost.created_at} />
                 <BsThreeDotsVertical fontSize="22px" />
 
             </div>
@@ -118,17 +136,23 @@ const Post = (props) => {
         </div>
 
         <div className="post-content mt-[20px]">
-            <div className=" w-full h-[250px] flex gap-1">
+            <div className="flex w-full gap-1 ">
                     {
-                    singlePost.images.map((img,index)=> <div key={`${singlePost.id}-${index}`} className="w-full  h-[250px]">
+                  pathName == '/home' ?  singlePost.images.map((img,index)=> <Link href={route('post.show',singlePost.id)}  key={`${singlePost.id}-${index}`} className="w-full  h-[250px]">
                      <img src={img} alt="" className='object-cover w-full h-full rounded-lg' />
-                     </div>
+                     </Link>
                      )
+                     :
+
+                     <Slider images={singlePost.images} />
                    }
+                   
+
+                
                
             </div>
 
-            <div className="flex gap-8 mx-3 mt-3">
+            <div className="flex gap-8 mx-3 my-3">
            
                 <button onClick={()=>toggleLike(singlePost.id)}
                 className='flex items-center ' variant="ghost" size="sm">
@@ -168,10 +192,10 @@ const Post = (props) => {
                 </div>
             </div>
 
-            <p className='mt-3 text-justify text-black/75'>
-                {singlePost.caption}
-                <Link  href={route('post.show',singlePost.id)}  className='text-black '> See More.....</Link>
-            </p> 
+            <Link href={route('post.show',singlePost.id)} className='mt-3 text-justify text-black/75'>
+                { pathName == '/home' ? useLimitedWords(singlePost.caption, 5): singlePost.caption}
+                {/* <Link  href={route('post.show',singlePost.id)}  className='text-black '> .....</Link> */}
+            </Link> 
 
            
         </div>

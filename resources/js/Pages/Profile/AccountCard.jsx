@@ -3,18 +3,55 @@ import profile from '../../../../public/assets/images/profile-image.jpg'
 import ImageCard from '@/Components/ImageCard';
 import { BiEdit } from "react-icons/bi";
 import FriendCountCard from '@/Components/FriendCountCard';
+import { useForm, usePage } from '@inertiajs/react';
+import { redirect } from 'react-router';
 
 
 
-const AccountCard = ({user}) => {
+const AccountCard = ({follow, user, postCount}) => {
 
+ const {data, setData, processing, errors, post} = useForm({
+        'following_id': null
+   })
+    
+  const pathName = window.location.pathname
 
     const [pf, setPf] = useState(profile)
+    const [following, setFollowing] = useState(follow)
+
+    const {auth} = usePage().props
+
+    console.log(auth.user.id);
+    
 
     const account = user.role == 'user'? user.normal_user : user.expert
 
+    const followerCount = user.followers.length
+    const followingCount = user.followings.length
+
+    const submit = (e, id) =>{
+      e.preventDefault();
+
+      // setData('following_id', id)
+
+       setFollowing(true)
+
+      post(route('zodiac-mates.follow', id))
+  }
+
+  const unfollow = (e, id) =>{
+      e.preventDefault();
+
+      // setData('following_id', id)
+
+       setFollowing(false)
+
+      post(route('zodiac-mates.unfollow', id))
+  }
+
   
   useEffect(() => {
+   
 
     const profilePicture =
       user.role === 'user'
@@ -46,13 +83,25 @@ const AccountCard = ({user}) => {
 
             </div>
         </div>
+      {
+        pathName == `/view-profile/${user.id}` &&
+
+        <div className="w-[350px] h-[35px] m-auto mt-4   ">
+        <button 
+        onClick={following ? (e)=>unfollow(e,user.id) : (e)=>submit(e,user.id)}
+        className='w-full h-full rounded-md bg-main-bg'>{
+              following ? 'Unfollow' : 'Follow'
+            }</button>
+      </div>
+      }
+       
 {/* 
         <hr className=' text-gray-50 w-[500px] mx-auto my-5' /> */}
 
         <div className="flex justify-center gap-8 mt-4 text-main-900 ">
-             <FriendCountCard title="Posts" count="8" />
-            <FriendCountCard title="Followers" count="77" />
-            <FriendCountCard title="Followings" count="100" />
+             <FriendCountCard title="Posts" count={postCount} />
+            <FriendCountCard title="Followers" count={followerCount} />
+            <FriendCountCard title="Followings" count={followingCount} />
         </div>
    </div>
 

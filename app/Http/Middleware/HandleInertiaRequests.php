@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Expert;
 use App\Models\Zodiac;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,7 +34,7 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        $user = $request->user() ? Auth::user()->load(['zodiac', 'expert', 'normalUser', 'followings']) : null;
+        $user = $request->user() ? Auth::user()->load(['zodiac', 'expert', 'normalUser','followers', 'followings']) : null;
         
         // Add expert image to the expert data if the user has an expert
         if ($user && $user->expert) {
@@ -44,12 +45,25 @@ class HandleInertiaRequests extends Middleware
             $user->normalUser->profile_picture_url = asset('storage/images/' . $user->normalUser->profile_picture);
         }
 
+        $expertSuggests = Expert::with(['account'])->inRandomOrder()->take(5)->get();
+
+        $expertRecommends = $expertSuggests->map(function ($expert) {
+            $expert->profile_picture_url =asset('storage/images/' . $expert->profile_picture) ; // Return the processed post
+            return $expert;
+        });
+      
+
         return [
             ...parent::share($request),
             'appName' => config('app.name'),
             'auth' => [
                 'user' => $user
             ],
+            'flash' => [
+                'message' => fn () => $request->session()->get('message')
+            ],
+            'profile_image'=> asset('assets/images/profile-image.jpg'),
+            'expertRecommends' => $expertRecommends,
             'followings' => $request->user() ? Auth::user()->load(['zodiac', 'followings']) : null,
             'zodiacs' => Zodiac::all(),
             'ziggy' => fn () => [

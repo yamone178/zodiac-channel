@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ExpertController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\HoroscopeController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -48,6 +50,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
  
+    Route::get('/view-profile/{id}', [AccountController::class, 'view'])->name('account.view');
 
     // Route::get('/home', function () {
     //     return Inertia::render('Home/Home');
@@ -63,6 +66,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/horoscope',[HoroscopeController::class, 'index'])->name('horoscope');
     Route::get('/zodiac-mates',[FollowerController::class, 'create'])->name('zodiac-mate');
+    Route::get('/experts',[FollowerController::class, 'expertFollow'])->name('expert');
 
     Route::post('/zodiac-mates', [FollowerController::class, 'store'])->name('zodiac-mates.store');
 
@@ -76,6 +80,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/expert/update', [ExpertController::class, 'update'])->name('expert.update');
 
     Route::get('/profile/view', [ProfileController::class, 'view'])->name('profile.view');
+
+    Route::post('/review', [ReviewController::class, 'store'])->name('review.store');
+    Route::patch('/review/update/{id}', [ReviewController::class, 'update'])->name('review.update');
+    Route::delete('/review/del/{id}', [ReviewController::class, 'destroy'])->name('review.delete');
 
 });
 

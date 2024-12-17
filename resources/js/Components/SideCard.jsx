@@ -9,6 +9,7 @@ import { AiTwotoneEdit } from "react-icons/ai";
 
 import profile from '../../../public/assets/images/profile-image.jpg'
 import ImageCard from './ImageCard';
+import { usePage } from '@inertiajs/react';
 
 
 
@@ -17,6 +18,8 @@ const SideCard = ({user, zodiac, showModal, showUpdateForm}) => {
   console.log(user);
 
   const [pf, setPf] = useState(profile)
+
+  const {auth} = usePage().props
 
   
   useEffect(() => {
@@ -68,9 +71,9 @@ const SideCard = ({user, zodiac, showModal, showUpdateForm}) => {
         </div>
 
          <hr className='h-[2px] bg-gray-500' />
-            <BtnConnections><p>Your Experts</p> <p className=' text-main-bright'>50</p></BtnConnections>
-            <BtnConnections><p>Your Follower Mates</p > <p className=' text-main-bright'>50</p></BtnConnections>
-            <BtnConnections><p>Your Following Mates</p> <p className=' text-main-bright'>50</p></BtnConnections>
+            <BtnConnections><p>Your Experts</p> <p className=' text-main-bright'>{auth.user.followers.length}</p></BtnConnections>
+            <BtnConnections><p>Your Follower Mates</p > <p className=' text-main-bright'>{auth.user.followers.length}</p></BtnConnections>
+            <BtnConnections><p>Your Following Mates</p> <p className=' text-main-bright'>{auth.user.followings.length}</p></BtnConnections>
         
 
     </div>

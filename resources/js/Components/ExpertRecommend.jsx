@@ -4,19 +4,20 @@ import { GoArrowRight } from 'react-icons/go'
 
 
 
-const ExpertRecommend = () => {
+const ExpertRecommend = ({expertRecommends}) => {
+
+   console.log(expertRecommends);
+   
+   
   return (
     <div className="py-8 w-[280px] bg-white border  rounded-lg px-[30px] h-auto sticky top-[105px]">
        <div className="mb-5">
           <h2 className=''>Top Experts</h2>
        </div>
 
-       <div className="">
-          <TopExpert />
-          <TopExpert />
-          <TopExpert />
-          <TopExpert />
-       </div>
+      {
+         expertRecommends.map((expert)=> <TopExpert key={expert.id} expert={expert} />)
+      }
 
        <p className='flex items-center gap-3 mt-5'>View all suggestions 
           <GoArrowRight />

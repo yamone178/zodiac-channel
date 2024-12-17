@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { GoComment, GoPencil, GoStarFill, GoTrash } from 'react-icons/go'
-import { Link} from '@inertiajs/react';
+import { Link, usePage} from '@inertiajs/react';
 import placeholder from '../../../public/assets/images/placeholder.svg'
 import EditPost from '@/Pages/Post/EditPost';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
@@ -10,6 +10,8 @@ import { router } from '@inertiajs/react'
 const ProfilePost = ({ account, post }) => {
 
   const [showEditForm, setShowEditForm] = useState(false)
+
+  const {auth} = usePage().props
 
   const delPost = () =>{
     router.delete(route('post.delete', post.id), {}, 
@@ -21,6 +23,8 @@ const ProfilePost = ({ account, post }) => {
   }
 
 
+  console.log(auth.user.normal_user.id, account.id);
+  
 
   const clickRef = useRef()
 
@@ -81,26 +85,31 @@ const ProfilePost = ({ account, post }) => {
 
         </div>
 
-        <div
-          className='flex items-center gap-2 ' variant="ghost" size="sm">
+       {
+
+        auth.user.normal_user.id === account.id &&
+        
+         <div
+         className='flex items-center gap-2 ' variant="ghost" size="sm">
 
 
-          <GoPencil
-          onClick={()=>setShowEditForm(true)}
-           className="w-8 h-6 p-1 text-white rounded-md bg-main-900" />
+         <GoPencil
+         onClick={()=>setShowEditForm(true)}
+          className="w-8 h-6 p-1 text-white rounded-md bg-main-900" />
 
-          <GoTrash
-          onClick={delPost}
-           className="w-8 h-6 p-1 text-white rounded-md bg-main-900" />
+         <GoTrash
+         onClick={delPost}
+          className="w-8 h-6 p-1 text-white rounded-md bg-main-900" />
 
-        </div>
+       </div>
+      }
+       {
+         showEditForm && <EditPost singlePost={post} clickRef={clickRef}  setShowEditForm={setShowEditForm}/>
+       }
 
-        {
-          showEditForm && <EditPost singlePost={post} clickRef={clickRef}  setShowEditForm={setShowEditForm}/>
-        }
 
 
-
+       
 
 
       </div>

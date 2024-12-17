@@ -31,7 +31,8 @@ class FollowerController extends Controller
         
 
         
-        $friends = Account::where('id', '!=', $userId)
+        $friends = Account::where('role', 'user')
+                ->where('id', '!=', $userId)
                 ->whereNotIn('id', function($query) use ($userId){
                     $query->select('following_id')
                             ->from('followers')
@@ -77,20 +78,66 @@ class FollowerController extends Controller
         return Inertia::render('Followers/ZodiacMates', ['friends'=> $processedfriends]);
     }
 
+    public function expertFollow()
+    {
+        $userId = Auth::id();
+
+        
+
+        
+        $friends = Account::where('role', 'expert')
+                ->where('id', '!=', $userId)
+                ->whereNotIn('id', function($query) use ($userId){
+                    $query->select('following_id')
+                            ->from('followers')
+                            ->where('account_id', $userId);
+                })->with(['zodiac', 'normalUser', 'expert' ])
+                ->latest()
+                 ->get();
+
+
+
+    $processedfriends = $friends->map(function ($friend) {
+        // // Process normal user profile picture
+        if ($profilePicture = $friend->normalUser?->profile_picture) {
+            $pathInfo = pathinfo($profilePicture);
+            //dd($pathInfo);
+            $filename = $pathInfo['basename'];
+
+            $friend->normalUser->profile_picture = asset('storage/images/' . $filename);
+        }
+    
+        // Process expert profile picture if normal user's picture is not available
+        if (!$profilePicture && $expertPicture = $friend->expert?->profile_picture) {
+            $pathInfo = pathinfo($expertPicture);
+            //dd($pathInfo);
+            $filename = $pathInfo['basename'];
+
+            $friend->expert->profile_picture = asset('storage/images/' . $filename);
+        }
+        
+          
+        return $friend; // Return the processed post
+    });
+        
+
+       
+        return Inertia::render('Followers/ZodiacMates', ['friends'=> $processedfriends]);
+    }
+
     public function follow($id)
     {
        
         $follower = auth()->user();
 
         $follower->followings()->attach($id);
-
-
-
         
 
         return back();
 
     }
+
+
 
     public function unfollow($id)
     {

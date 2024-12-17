@@ -1,20 +1,35 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import Search from '@/Components/Search';
 import { BiHome } from "react-icons/bi";
 import { LiaUserFriendsSolid } from "react-icons/lia";
 import { TbUserStar } from "react-icons/tb";
 import { RiStarLine } from "react-icons/ri";
+import { toast, ToastContainer } from 'react-toastify';
 
 
 
 
 export default function Authenticated({ user, header, children}) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
+    const {flash} = usePage().props
+    const [lastMessage, setLastMessage] = useState(null)
+    const notify = (message) => toast.success(message);
+    
+    useEffect(()=>{
+        if (flash?.message) {
+            console.log(flash.message);
+            
+            notify(flash.message)
+            setLastMessage(flash.message)
+          }
+    },[flash])
+
+  
 
     return (
         <div  className="min-h-screen bg-main-bg ">
@@ -59,7 +74,7 @@ export default function Authenticated({ user, header, children}) {
                                         <p className='mt-3'>Zodiac Mates</p>
                                 </NavLink>
 
-                                <NavLink  className=' text-main-900' href={route('home')} >
+                                <NavLink  className=' text-main-900' href={route('expert')}  active={route().current('expert')}>
                                          <TbUserStar fontSize="27px" />
                                         <p className='mt-3'>Experts</p>
                                 </NavLink>
@@ -153,6 +168,10 @@ export default function Authenticated({ user, header, children}) {
                     </div>
                 </div>
             </nav>
+
+            {
+                <ToastContainer />
+            }
 {/* 
             {header && (
                 <header className="bg-white shadow">

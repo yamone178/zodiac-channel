@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Comment;
+use App\Models\Expert;
 use App\Models\Like;
 use App\Models\Zodiac;
 use Illuminate\Http\Request;
@@ -40,12 +41,17 @@ class PostController extends Controller
         $zodiacs = Zodiac::all();    
         // Process posts
         $processedPosts = $posts->map(function ($post) {
+           
             return Post::passProfileImage($post); // Return the processed post
         });
+
+
+       
 
         return Inertia::render('Home/Home', [
             'posts' => $processedPosts,
             'zodiacs' => $zodiacs,
+           
         ]);
     }
 
@@ -220,6 +226,6 @@ class PostController extends Controller
       
 
 
-        return redirect()->back();
+        return redirect()->back()->with('message', 'Post Deleted successfully!');
     }
 }

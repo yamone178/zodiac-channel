@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Post;
+use App\Models\Review;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -22,12 +23,27 @@ class ProfileController extends Controller
         ->with(['zodiacs', 'account', 'likes', 'comments', 'account.normalUser', 'account.expert'])
         ->latest()
         ->get();
+
+        $reviews = Review::with(['expert','user.account'])
+                    ->latest()->get();
+
+        
+        $processedReviews = $reviews->map(function ($review) {
+            $pathInfo = pathinfo($review->user->profile_picture);
+            //dd($pathInfo);
+            $filename = $pathInfo['basename'];
+            // dd($review->user->profile_picture);
+            $review->user->profile_picture_url = asset('storage/images/' .$filename);
+            return $review;
+        });
+
+        
     
 
         $processedPosts = $posts->map(function ($post) {
             return Post::passProfileImage($post); // Return the processed post
         });
-        return Inertia::render('Profile/Profile', ['posts'=> $processedPosts]);
+        return Inertia::render('Profile/Profile', ['posts'=> $processedPosts, 'reviews'=>$processedReviews]);
     }
     /**
      * Display the user's profile form.

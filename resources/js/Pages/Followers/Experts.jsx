@@ -3,11 +3,7 @@ import FollowLayout from '@/Layouts/FollowLayout'
 import React, { useEffect, useState } from 'react'
 import SuggestCard from '@/Components/Follow/SuggestCard'
 
-const ZodiacMates = ({friends}) => {
-
-  
-    
-
+const Experts = ({friends}) => {
 
     const [mates, setMates] = useState()
 
@@ -34,4 +30,4 @@ const ZodiacMates = ({friends}) => {
   )
 }
 
-export default ZodiacMates
+export default Experts

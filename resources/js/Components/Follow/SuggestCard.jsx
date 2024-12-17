@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import testImg from '../../../../public/assets/images/test.jpg'
 import { GoPlus } from "react-icons/go";
-import { useForm, usePage } from '@inertiajs/react';
+import { Link, useForm, usePage } from '@inertiajs/react';
 import profile from '../../../../public/assets/images/profile-image.jpg'
 
 
@@ -71,12 +71,12 @@ const SuggestCard = ({mate}) => {
     
   return (
     <div className='flex items-center gap-3 p-5 border rounded-lg bg-main-bg border-main-bright'>
-        <div className=" w-[60px] h-[60px] ">
+        <Link  href={route('account.view', mate.id)} className=" w-[60px] h-[60px] ">
             <img src={pf} className='object-cover w-full h-full rounded-full' alt="" />
-        </div>
+        </Link>
 
         <div className="">
-            <h2 className='font-bold '>{mate.name}</h2>
+            <Link href={route('account.view', mate.id)} className='font-bold '>{mate.name}</Link>
             <p className='text-sm text-gray-600'>{mate.zodiac.name}</p>
 
           

@@ -12,7 +12,10 @@ import UpdateProfileForm from '@/Pages/Profile/Partials/UpdateProfileForm';
 
 const HomeLayout = ({user, account,  children}) => {
 
-    const { auth, zodiacs } = usePage().props;
+    const { auth, zodiacs, expertRecommends } = usePage().props;
+
+    console.log(expertRecommends);
+    
 
     
     const [openModal, setOpenModal] = useState(false)
@@ -79,7 +82,7 @@ const HomeLayout = ({user, account,  children}) => {
                 
                
                <div className='z-0 '>
-                 <ExpertRecommend />
+                 <ExpertRecommend expertRecommends={expertRecommends}/>
                </div>
 
               
