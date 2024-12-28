@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Expert;
 use App\Http\Requests\StoreExpertRequest;
 use App\Http\Requests\UpdateExpertRequest;
+use App\Models\Account;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -58,22 +60,29 @@ class ExpertController extends Controller
      */
     public function update(UpdateExpertRequest $request, Expert $expert)
     {
+
         $userAccount = Auth::user()->expert; //normalUser
 
         $user = Expert::where('id', $userAccount->id)->first();
 
+        if($request->has('data.name')) {
+            $userId = Account::where('id', Auth::id())->first(); 
+         
+            $userId->name = $request->data['name'];
+            $userId->update();
+        }
 
-        if ($request->data['bio'] !== null) {
+        if ($request->has('data.bio')) {
             $user->bio = $request->data['bio'];
         }
 
-        if ($request->data['dob'] !== null) {
+        if ($request->has('data.dob')) {
             $user->dob = $request->data['dob'];
         }
-        if ($request->data['about_me'] !== null) {
+        if ($request->has('data.about_me')) {
             $user->about_me = $request->data['about_me'];
         }
-        if ($request->data['expertise'] !== null) {
+        if ($request->has('data.expertise')) {
             $user->expertise = $request->data['expertise'];
         }
     
@@ -102,7 +111,7 @@ class ExpertController extends Controller
 
         // Saving the expert profile
         $user->update();
-        return redirect()->back();
+        return redirect()->back()->with('message','Profile Updated Successfully');
     }
 
     /**

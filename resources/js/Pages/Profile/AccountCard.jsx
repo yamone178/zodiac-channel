@@ -8,7 +8,7 @@ import { redirect } from 'react-router';
 
 
 
-const AccountCard = ({follow, user, postCount}) => {
+const AccountCard = ({follow, user, postCount, setShowEditProfile}) => {
 
  const {data, setData, processing, errors, post} = useForm({
         'following_id': null
@@ -78,8 +78,10 @@ const AccountCard = ({follow, user, postCount}) => {
                 <h4 className=' text-[15px] text-white/90 '>{account.bio}</h4>               
             </div>
 
-            <div className="">
-                <BiEdit className='text-white text-[30px]' />
+            <div className=" cursor-pointer">
+                <BiEdit
+                onClick={()=>setShowEditProfile(true)}
+                className='text-white text-[30px]' />
 
             </div>
         </div>

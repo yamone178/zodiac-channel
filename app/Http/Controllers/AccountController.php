@@ -40,6 +40,7 @@ class AccountController extends Controller
             $account->expert->profile_picture_url = asset('storage/images/' . $account->expert->profile_picture);
         }
 
+
         if ($account && $account->role == 'user') {
             $account->normalUser->profile_picture_url = asset('storage/images/' . $account->normalUser->profile_picture);
         }
@@ -48,7 +49,8 @@ class AccountController extends Controller
             return Post::passProfileImage($post); // Return the processed post
         });
 
-        $reviews = Review::with(['expert','user.account'])
+        $reviews = Review::where('expert_id', $id )
+                    -> with(['expert','user.account'])
                     ->latest()->get();
 
         

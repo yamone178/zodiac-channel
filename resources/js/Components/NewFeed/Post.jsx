@@ -136,9 +136,11 @@ const Post = (props) => {
         </div>
 
         <div className="post-content mt-[20px]">
-            <div className="flex w-full gap-1 ">
+           {
+            singlePost.images !== null &&
+           <div className="flex w-full gap-1 mb-3 ">
                     {
-                  pathName == '/home' ?  singlePost.images.map((img,index)=> <Link href={route('post.show',singlePost.id)}  key={`${singlePost.id}-${index}`} className="w-full  h-[250px]">
+                    route().current('home') ?  singlePost.images.map((img,index)=> <Link href={route('post.show',singlePost.id)}  key={`${singlePost.id}-${index}`} className="w-full  h-[250px]">
                      <img src={img} alt="" className='object-cover w-full h-full rounded-lg' />
                      </Link>
                      )
@@ -150,7 +152,12 @@ const Post = (props) => {
 
                 
                
-            </div>
+            </div>}
+
+            <Link href={route('post.show',singlePost.id)} className='mt-3 text-justify whitespace-pre-line text-black/75'>
+                { route().current('home') ? useLimitedWords(singlePost.caption, 5): singlePost.caption}
+                {/* <Link  href={route('post.show',singlePost.id)}  className='text-black '> .....</Link> */}
+            </Link> 
 
             <div className="flex gap-8 mx-3 my-3">
            
@@ -192,10 +199,7 @@ const Post = (props) => {
                 </div>
             </div>
 
-            <Link href={route('post.show',singlePost.id)} className='mt-3 text-justify text-black/75'>
-                { pathName == '/home' ? useLimitedWords(singlePost.caption, 5): singlePost.caption}
-                {/* <Link  href={route('post.show',singlePost.id)}  className='text-black '> .....</Link> */}
-            </Link> 
+           
 
            
         </div>

@@ -13,14 +13,17 @@ const AllFeedback = ({pfAccount, reviews}) => {
 
     const [showUpdateForm, setShowUpdateForm] = useState(false)
     const [oldReview, setOldReview] = useState(null)
+
+    console.log(auth);
+    
   return (
     <div>
       {
-        route().current('account.view') && 
+        route().current('account.view') &&  auth.user.role !== 'expert' &&
         <>
            {
               showUpdateForm ?
-             <EditReview oldReview={oldReview} expert_id={pfAccount.expert.id} user_id={auth.user.normal_user?.id}/> :
+            <EditReview oldReview={oldReview} expert_id={pfAccount.expert.id} user_id={auth.user.normal_user?.id}/> :
             pfAccount.role == 'expert' &&
             <WriteReview expert_id={pfAccount.expert.id} user_id={auth.user.normal_user?.id}/>
            }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ExpertController;
@@ -66,6 +67,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/horoscope',[HoroscopeController::class, 'index'])->name('horoscope');
     Route::get('/zodiac-mates',[FollowerController::class, 'create'])->name('zodiac-mate');
+    Route::get('/your-zodiac-mates',[FollowerController::class, 'getZodiacsFriends'])->name('your-zodiac-mates');
+    Route::get('/your-experts',[FollowerController::class, 'getExpertFriends'])->name('your-experts');
+
     Route::get('/experts',[FollowerController::class, 'expertFollow'])->name('expert');
 
     Route::post('/zodiac-mates', [FollowerController::class, 'store'])->name('zodiac-mates.store');
@@ -75,6 +79,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/post/{id}/like', [LikeController::class, 'toggleLike'])->name('post.like');
 
     Route::post('/post/{id}/comment', [CommentController::class, 'store'])->name('comment.store');
+    Route::patch('/comment/{id}', [CommentController::class, 'update'])->name('comment.update');    
 
     Route::patch('/profile/update', [UserController::class, 'update'])->name('user.update');
     Route::patch('/expert/update', [ExpertController::class, 'update'])->name('expert.update');
@@ -85,6 +90,14 @@ Route::middleware('auth')->group(function () {
     Route::patch('/review/update/{id}', [ReviewController::class, 'update'])->name('review.update');
     Route::delete('/review/del/{id}', [ReviewController::class, 'destroy'])->name('review.delete');
 
+
+    // admin
+
+  Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/home', [AdminController::class, 'home'])->name('home');
+    Route::get('/experts', [AdminController::class, 'experts'])->name('experts');
+    Route::get('/users', [AdminController::class, 'users'])->name('users');
+});
 });
 
 

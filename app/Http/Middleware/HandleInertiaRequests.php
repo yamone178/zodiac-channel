@@ -64,7 +64,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'profile_image'=> asset('assets/images/profile-image.jpg'),
             'expertRecommends' => $expertRecommends,
-            'followings' => $request->user() ? Auth::user()->load(['zodiac', 'followings']) : null,
+            'matesExperts' => $request->user() ? Auth::user()->load(['zodiac', 'followings', 'followers']) : null,
             'zodiacs' => Zodiac::all(),
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),

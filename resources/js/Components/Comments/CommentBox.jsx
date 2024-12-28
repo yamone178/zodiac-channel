@@ -1,4 +1,4 @@
-import { useForm } from '@inertiajs/react'
+import { router, useForm } from '@inertiajs/react'
 import React from 'react'
 
 const CommentBox = ({ clickRef, postId, setShowCommentBox }) => {
@@ -13,9 +13,17 @@ const CommentBox = ({ clickRef, postId, setShowCommentBox }) => {
 
         setShowCommentBox(false)
 
-        post(route('comment.store', postId),{
-            data: data
-        })
+        router.post(
+            route('comment.store', postId),
+            
+            data,
+            
+            {
+                preserveState: true,
+                preserveScroll: true,
+                
+            }
+    )
 
     }
 

@@ -46,7 +46,7 @@ const ViewAccount = ({ posts, pfAccount, follow, reviews }) => {
 
 
       <div className=" relative px-[50px] py-[40px]">
-       
+
         <AccountCard follow={follow} postCount={postCount} user={pfAccount} />
 
 
@@ -91,7 +91,8 @@ const ViewAccount = ({ posts, pfAccount, follow, reviews }) => {
 
                 </div>
 
-                <div className="flex flex-wrap items-center justify-between space-y-4">
+
+                <div className="grid grid-cols-3 gap-3">
 
                   {
 
@@ -102,7 +103,7 @@ const ViewAccount = ({ posts, pfAccount, follow, reviews }) => {
                       :
                       posts.map((post, index) => {
                         if (index < 3) {
-                          return <ProfilePost key={post.id} account={pfAccount} post={post} />
+                          return <ProfilePost key={post.id} account={account} post={post} />
                         }
                       })
                   }

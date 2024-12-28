@@ -117,7 +117,7 @@ class PostController extends Controller
             $post->zodiacs()->attach($request['tagged_zodiacs']);
         }
            
-        return redirect()->route('home');
+        return redirect()->route('home')->with('message', 'Your post was created successfully!');
 
     }
 
@@ -201,7 +201,7 @@ class PostController extends Controller
             $post->zodiacs()->sync($request->data['tagged_zodiacs']);
         }
     
-        return redirect()->back()->with('success', 'Post updated successfully!');
+        return redirect()->back()->with('message', 'Post updated successfully!');
     }
     
 

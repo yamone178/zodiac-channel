@@ -75,7 +75,7 @@ const HomeLayout = ({user, account,  children}) => {
 
                 
                     {
-                        openUpdateForm && <UpdateProfileForm clickRef={clickRef} closeUpdateForm={closeUpdateForm}/>
+                        openUpdateForm && <UpdateProfileForm user={auth.user} clickRef={clickRef} closeUpdateForm={closeUpdateForm}/>
                     }
               
               

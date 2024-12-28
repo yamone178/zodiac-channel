@@ -9,6 +9,7 @@ import { router } from '@inertiajs/react'
 
 const ProfilePost = ({ account, post }) => {
 
+  
   const [showEditForm, setShowEditForm] = useState(false)
 
   const {auth} = usePage().props
@@ -22,8 +23,10 @@ const ProfilePost = ({ account, post }) => {
     })
   }
 
-
-  console.log(auth.user.normal_user.id, account.id);
+  console.log(auth.user.id, account.id);
+  console.log(auth,account);
+  console.log(post)
+  
   
 
   const clickRef = useRef()
@@ -36,7 +39,7 @@ const ProfilePost = ({ account, post }) => {
   return (
     <div
       //  href={route('post.show',post.id)} 
-      className=' w-[32%]  bg-white  border    '>
+      className='bg-white border '>
 
       <Link href={route('post.show',post.id)} className="post-content ">
         <div className="flex w-full ">
@@ -87,8 +90,8 @@ const ProfilePost = ({ account, post }) => {
 
        {
 
-        auth.user.normal_user.id === account.id &&
-        
+        auth.user.id === post.account.id  &&
+      
          <div
          className='flex items-center gap-2 ' variant="ghost" size="sm">
 
@@ -107,6 +110,7 @@ const ProfilePost = ({ account, post }) => {
          showEditForm && <EditPost singlePost={post} clickRef={clickRef}  setShowEditForm={setShowEditForm}/>
        }
 
+      
 
 
        

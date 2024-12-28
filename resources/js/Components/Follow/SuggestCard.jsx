@@ -8,23 +8,25 @@ import profile from '../../../../public/assets/images/profile-image.jpg'
 
 const SuggestCard = ({mate}) => {
 
+    console.log(mate);
+    
+
     const {data, setData, processing, errors, post} = useForm({
         'following_id': null
     })
 
-    const { followings ,auth, zodiacs , added} = usePage().props;
+    const { matesExperts ,auth, zodiacs , added} = usePage().props;
 
     const [follow, setFollow] = useState() 
     const [pf, setPf] = useState()
    
-
-    console.log(added)
+    console.log(matesExperts)
 
     useEffect(()=>{
     
-       const friends = followings.followings
+       
 
-       const isAlreadyFollowing = followings.followings.some(friend => friend.id === mate.id);
+       const isAlreadyFollowing = matesExperts?.followings?.some(friend => friend.id === mate.id);
 
        setFollow(isAlreadyFollowing)
         console.log(isAlreadyFollowing);
@@ -36,7 +38,7 @@ const SuggestCard = ({mate}) => {
   
       setPf(profilePicture);
         
-    },[followings, mate])
+    },[matesExperts, mate])
 
    
     
@@ -71,18 +73,22 @@ const SuggestCard = ({mate}) => {
     
   return (
     <div className='flex items-center gap-3 p-5 border rounded-lg bg-main-bg border-main-bright'>
-        <Link  href={route('account.view', mate.id)} className=" w-[60px] h-[60px] ">
+        <Link
+          href={route('account.view', mate.id)}
+           className=" w-[60px] h-[60px] ">
             <img src={pf} className='object-cover w-full h-full rounded-full' alt="" />
         </Link>
 
         <div className="">
-            <Link href={route('account.view', mate.id)} className='font-bold '>{mate.name}</Link>
-            <p className='text-sm text-gray-600'>{mate.zodiac.name}</p>
+            <Link
+             href={route('account.view', mate.id)}
+              className='font-bold '>{mate.name}</Link>
+            <p className='text-sm text-gray-600'>{mate.zodiac?.name}</p>
 
           
             
          <button 
-            onClick={(e)=>submit(e,mate.id)}
+            onClick={ follow ? (e)=>unfollow(e,mate.id) : (e)=>submit(e,mate.id)}
             className='flex h-[30px] items-center border hover:bg-main-900 hover:text-white gap-3 px-3 py-1 mt-2 text-[12px] rounded-md  border-main-bright text-main-bright'>
             {follow ? 'Unfollow': 'follow'} <GoPlus />
         </button>

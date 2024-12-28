@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Expert;
 use App\Models\Post;
 use App\Models\Review;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -24,7 +25,13 @@ class ProfileController extends Controller
         ->latest()
         ->get();
 
-        $reviews = Review::with(['expert','user.account'])
+         $authExpertId = Auth::user()->role == 'expert' ? Auth::user()->expert->id : Auth::user()->normalUser->id;
+
+        // dd($authExpertId);  
+
+
+        $reviews = Review::where('expert_id', $authExpertId)
+                    ->with(['expert','user.account'])
                     ->latest()->get();
 
         

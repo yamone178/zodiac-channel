@@ -26,7 +26,7 @@ class RegisteredUserController extends Controller
     public function create(): Response
     {
         $zodiacs = Zodiac::all();
-        return Inertia::render('Auth/Register', ['zodiacs'=>$zodiacs]);
+        return Inertia::render('Auth/Register', ['zodiacs' => $zodiacs]);
     }
 
     /**
@@ -36,12 +36,11 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.Account::class,
-            'role'=>'required',
-            
+            'email' => 'required|string|lowercase|email|max:255|unique:accounts,email',
+            'role' => 'required',
+            'zodiac' => 'required|exists:zodiacs,id',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -49,14 +48,16 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'role' => $request->role,
-            'admin_id'=>1,
+            'admin_id' => 1,
             'zodiac_id' => $request->zodiac,
             'password' => Hash::make($request->password),
         ]);
 
-        $normalUser = new User();
-        $normalUser->account_id = $user->id;
-        $normalUser->save();
+        if ($request->role === 'user') {
+            $normalUser = new User();
+            $normalUser->account_id = $user->id;
+            $normalUser->save();
+        }
 
         $user->load('zodiac');
 
@@ -64,80 +65,75 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME);
+        return redirect()->route('home');
     }
 
-
-    public function expertStore(Request $request)
-{
-
-  
-  
-    // Extracting data from the request
-    $results = $request->data;
-
-
-    DB::beginTransaction();
-
-    try {
-
-        $user = Account::create([
-            'name' => $results['name'],
-            'email' => $results['email'],
-            'role' => $results['role'],
-            'admin_id' => 1,
-            'zodiac_id' => $results['zodiac'],
-            'password' => Hash::make($results['password']),
+    /**
+     * Handle an incoming expert registration request.
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function expertStore(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'data.name' => 'required|string|max:255',
+            'data.email' => 'required|string|lowercase|email|max:255|unique:accounts,email',
+            'data.role' => 'required',
+            'data.zodiac' => 'required|exists:zodiacs,id',
+            'data.password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'data.profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'data.about_me' => 'required|string',
+            'data.dob' => 'required|date',
+            'data.no_of_exp' => 'required|integer|min:0',
+            'data.expertise' => 'required|string',
+            'data.bio' => 'required|string',
         ]);
-    
-        $user->load('zodiac');
-    
-       
-    
-        // Creating the Expert profile
-        $expert = new Expert();
-        $expert->bio = $results['bio'];
-        $expert->about_me = $results['about_me'];
-        $expert->expertise = $results['expertise'];
-        $expert->dob = $results['dob'];
-        $expert->account_id = $user->id;
 
-        
-    
-        // Handling profile picture upload if provided
-        if ($request->hasFile('data.profile_picture')) {
-                
-            $fileName = uniqid().$request->file('data.profile_picture')->getClientOriginalName();
-            $request->file('data.profile_picture')->storeAs('public/images', $fileName);
-           
-            $expert->profile_picture = $fileName; // Store the file path in the database
+        DB::beginTransaction();
+
+        try {
+            $results = $request->data;
+
+            $user = Account::create([
+                'name' => $results['name'],
+                'email' => $results['email'],
+                'role' => $results['role'],
+                'admin_id' => 1,
+                'zodiac_id' => $results['zodiac'],
+                'password' => Hash::make($results['password']),
+            ]);
+
+            $user->load('zodiac');
+
+            // Creating the Expert profile
+            $expert = new Expert();
+            $expert->bio = $results['bio'];
+            $expert->about_me = $results['about_me'];
+            $expert->expertise = $results['expertise'];
+            $expert->dob = $results['dob'];
+            $expert->account_id = $user->id;
+
+            // Handling profile picture upload if provided
+            if ($request->hasFile('data.profile_picture')) {
+                $fileName = uniqid() . '.' . $request->file('data.profile_picture')->getClientOriginalExtension();
+                $request->file('data.profile_picture')->storeAs('public/images', $fileName);
+                $expert->profile_picture = $fileName; // Store the file path in the database
+            }
+
+            // Saving the expert profile
+            $expert->save();
+
+            // Fire the Registered event
+            event(new Registered($user));
+
+            // Auto-login the newly created user
+            Auth::login($user);
+
+            DB::commit();
+            return redirect(RouteServiceProvider::HOME);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
         }
-    
-        // Saving the expert profile
-        $expert->save();
-    
-    
-    
-         // Fire the Registered event
-         event(new Registered($user));
-        // Auto-login the newly created user
-        Auth::login($user);
-        
-
-        DB::commit();
-        return redirect(RouteServiceProvider::HOME);
-    } catch (\Throwable $th) {
-        DB::rollBack();
-        throw $th;
-     }
-
-  
-
-    // Creating the account
-   
-
-    // Redirect to home
-    
-}
-
+    }
 }
