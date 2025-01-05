@@ -54,13 +54,21 @@ export default function Register({ zodiacs }) {
     console.log('hello');
     
     if (data.role === 'expert') {
+      console.log(data);
+     
+      
       const accountErrors = validateAccountForm();
+    
+
       if (Object.keys(accountErrors).length > 0) {
         Object.keys(accountErrors).forEach((key) => {
           setError(key, accountErrors[key]);
         });
       } else {
+     
         setShowExpertForm(true);
+
+        
       }
     } else {
       post(route('register'));
@@ -69,6 +77,8 @@ export default function Register({ zodiacs }) {
 
   const expertSubmit = (e) => {
     e.preventDefault();
+    console.log('hello');
+    
     const formData = new FormData();
     Object.keys(data).forEach((key) => {
       formData.append(`data[${key}]`, data[key]);

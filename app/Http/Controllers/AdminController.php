@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account;
 use App\Models\Expert;
 use App\Models\Post;
 use App\Models\User;
@@ -55,4 +56,14 @@ class AdminController extends Controller
              'pagination' => $users
         ]);
     }
+
+    public function approve($id, Request $request)
+    {
+        $user = Account::find($id);
+        $user->approved = $request->approved;
+        $user->save();
+
+        return redirect()->back();
+    }
+   
 }

@@ -1,5 +1,5 @@
 import AdminLayout from '@/Layouts/AdminLayout'
-import { usePage, Link } from '@inertiajs/react'
+import { usePage, Link, router } from '@inertiajs/react'
 import React, { useRef, useState } from 'react'
 import ViewExpertCard from './ViewExpertCard'
 import { useOutsideClick } from '@/hooks/useOutsideClick'
@@ -22,6 +22,14 @@ const Experts = ({ experts, pagination }) => {
         setViewCard(true)
         setSelectExpert(expert)
     }
+
+    const approveExpert = (id, approved) => {
+        router.post(route('admin.approve',id),{
+            _method: 'patch', 
+            'approved': approved
+        })
+    }
+    
     return (
         <AdminLayout
             user={auth.user}
@@ -70,6 +78,12 @@ const Experts = ({ experts, pagination }) => {
                                         >
                                             About
                                         </th>
+                                        <th
+                                            scope="col"
+                                            className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
+                                        >
+                                            Approve
+                                        </th>
                                         <th scope="col" className="relative px-6 py-3">
                                             <span className="sr-only">Edit</span>
                                         </th>
@@ -105,6 +119,13 @@ const Experts = ({ experts, pagination }) => {
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <div className="text-sm text-gray-900">{expert.about_me}</div>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                            <button
+                                                onClick={() => approveExpert(expert.account.id, !expert.account.approved)}
+                                                  className="text-indigo-600 hover:text-indigo-900">
+                                                    {expert.account.approved ? 'Ban' : 'Approve'}
+                                                </button>
                                             </td>
                                             <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
                                                 <button

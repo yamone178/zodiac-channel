@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->enum('role',['user', 'expert'])->default('user');
-            $table->boolean('approved')->default(1);   
+            $table->boolean('approved')->default(1); ;
             $table->timestamp('joined_at')->useCurrent();
             $table->foreignId('admin_id')->constrained();
             $table->foreignId('zodiac_id')->constrained();

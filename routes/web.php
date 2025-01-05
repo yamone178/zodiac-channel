@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ExpertController;
 use App\Http\Controllers\FollowerController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\HoroscopeController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
@@ -31,8 +32,8 @@ Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
+        'heroImg' => asset('assets/images/Picsart_25-01-01_23-36-52-945.png'),
+        'bgImg' => asset('assets/images/bg.jpg'),
     ]);
 });
 
@@ -56,9 +57,13 @@ Route::middleware('auth')->group(function () {
     // Route::get('/home', function () {
     //     return Inertia::render('Home/Home');
     // })->name('home');
-    Route::get('/home', [PostController::class, 'index'])->name('home');
+    Route::middleware(['approved'])->group(function () {
+        Route::get('/home', [PostController::class, 'index'])->name('home');
+        Route::post('/home', [PostController::class, 'store'])->name('post.store');
+
+    });
     // Route::get('/home/post', [PostController::class, 'create'])->name('post.create');
-    Route::post('/home', [PostController::class, 'store'])->name('post.store');
+ 
     Route::get('/post/{id}', [PostController::class, 'show'])->name('post.show');
     Route::get('/posts', [PostController::class, 'allposts'])->name('post.index');
     Route::patch('/post/{id}', [PostController::class, 'update'])->name('post.update');
@@ -91,12 +96,15 @@ Route::middleware('auth')->group(function () {
     Route::delete('/review/del/{id}', [ReviewController::class, 'destroy'])->name('review.delete');
 
 
+    Route::get('/approve',[HomeController::class, 'approval'])->name('approve');
+
     // admin
 
   Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/home', [AdminController::class, 'home'])->name('home');
     Route::get('/experts', [AdminController::class, 'experts'])->name('experts');
     Route::get('/users', [AdminController::class, 'users'])->name('users');
+    Route::patch('/approve/{id}', [AdminController::class, 'approve'])->name('approve');
 });
 });
 

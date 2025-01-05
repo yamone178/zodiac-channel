@@ -44,6 +44,8 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        $approved = $request->role === 'user' ? 1 : 0;
+
         $user = Account::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -51,6 +53,7 @@ class RegisteredUserController extends Controller
             'admin_id' => 1,
             'zodiac_id' => $request->zodiac,
             'password' => Hash::make($request->password),
+            'apporved' => $approved,
         ]);
 
         if ($request->role === 'user') {
@@ -75,24 +78,26 @@ class RegisteredUserController extends Controller
      */
     public function expertStore(Request $request): RedirectResponse
     {
-        $request->validate([
-            'data.name' => 'required|string|max:255',
-            'data.email' => 'required|string|lowercase|email|max:255|unique:accounts,email',
-            'data.role' => 'required',
-            'data.zodiac' => 'required|exists:zodiacs,id',
-            'data.password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'data.profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'data.about_me' => 'required|string',
-            'data.dob' => 'required|date',
-            'data.no_of_exp' => 'required|integer|min:0',
-            'data.expertise' => 'required|string',
-            'data.bio' => 'required|string',
-        ]);
+        // $request->validate([
+        //     'data.name' => 'required|string|max:255',
+        //     'data.email' => 'required|string|lowercase|email|max:255|unique:accounts,email',
+        //     'data.role' => 'required',
+        //     'data.zodiac' => 'required|exists:zodiacs,id',
+        //     'data.password' => ['required', 'confirmed', Rules\Password::defaults()],
+        //     'data.profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        //     'data.about_me' => 'required|string',
+        //     'data.dob' => 'required|date',
+        //     'data.no_of_exp' => 'required|integer|min:0',
+        //     'data.expertise' => 'required|string',
+        //     'data.bio' => 'required|string',
+        // ]);
 
         DB::beginTransaction();
 
         try {
             $results = $request->data;
+
+            $approved = $results['role'] === 'user' ? 1 : 0;
 
             $user = Account::create([
                 'name' => $results['name'],
@@ -101,7 +106,10 @@ class RegisteredUserController extends Controller
                 'admin_id' => 1,
                 'zodiac_id' => $results['zodiac'],
                 'password' => Hash::make($results['password']),
+                'approved' => $approved,
+
             ]);
+
 
             $user->load('zodiac');
 

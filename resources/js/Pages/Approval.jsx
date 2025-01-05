@@ -1,39 +1,17 @@
-import { useEffect, useState } from 'react';
-import ApplicationLogo from '@/Components/ApplicationLogo';
-import Dropdown from '@/Components/Dropdown';
+import ResponsiveNavLink from '@/Components/ResponsiveNavLink'
+import { Link } from '@inertiajs/react';
+import React, { useState } from 'react'
 import NavLink from '@/Components/NavLink';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
-import { Link, usePage } from '@inertiajs/react';
-import Search from '@/Components/Search';
-import { BiHome } from "react-icons/bi";
-import { LiaUserFriendsSolid } from "react-icons/lia";
-import { TbUserStar } from "react-icons/tb";
-import { RiStarLine } from "react-icons/ri";
-import { toast, ToastContainer } from 'react-toastify';
+import Dropdown from '@/Components/Dropdown';
 
+const Approval = ({user}) => {
+   const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
-
-
-export default function Authenticated({ user, header, children}) {
-    const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
-    const {flash} = usePage().props
-    const [lastMessage, setLastMessage] = useState(null)
-    const notify = (message) => toast.success(message);
-    
-    useEffect(()=>{
-        if (flash?.message) {
-            console.log(flash.message);
-            
-            notify(flash.message)
-            setLastMessage(flash.message)
-          }
-    },[flash])
 
   
-
-    return (
-        <div  className="min-h-screen bg-main-bg ">
-                <nav className="sticky top-0 z-10 border-gray-100 bg-white/50 backdrop-blur-xl">
+  return (
+    <div  className="min-h-screen bg-main-bg">
+      <nav className="sticky top-0 z-10 py-4 border-gray-100 bg-white/50 backdrop-blur-xl">
                     <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
                         <div className="flex justify-between">
                             <div className="flex">
@@ -54,10 +32,9 @@ export default function Authenticated({ user, header, children}) {
                                     </svg>
                                     </div>
                                 </Link>
-                                    <Search />
                                 </div>
 
-                                <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                {/* <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                     <NavLink className=' text-main-900' href={route('home')} active={route().current('home')}>
                                             <BiHome fontSize="27px" />
                                             <p className='mt-3'>Home</p>          
@@ -80,7 +57,7 @@ export default function Authenticated({ user, header, children}) {
                                     </NavLink>
 
                                 
-                                </div>
+                                </div> */}
                             </div>
 
                             <div className="hidden sm:flex sm:items-center sm:ms-6">
@@ -169,17 +146,12 @@ export default function Authenticated({ user, header, children}) {
                     </div>
                 </nav>
 
-            {
-                <ToastContainer />
-            }
-{/* 
-            {header && (
-                <header className="bg-white shadow">
-                    <div className="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">{header}</div>
-                </header>
-            )} */}
-
-            <main>{children}</main>
-        </div>
-    );
+   <div className=" mx-auto  px-6 py-8 mt-20 bg-white w-[500px] text-center border border-main-900">
+      <h1 className='text-lg font-extrabold'> Please Wait!</h1>
+      <h2>You need Admin's Approval.</h2>
+   </div>
+</div>
+  )
 }
+
+export default Approval

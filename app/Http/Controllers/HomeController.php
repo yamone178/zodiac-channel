@@ -24,4 +24,10 @@ class HomeController extends Controller
     //     return Inertia::render('Layouts/HomeLayout', ['account'=>$account]);
 
     // }
+
+    public function approval()
+    {
+        $user = Auth::user();
+        return Inertia::render('Approval', ['user' => $user]);  
+    }
 }
