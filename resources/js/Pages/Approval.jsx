@@ -1,12 +1,18 @@
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink'
-import { Link } from '@inertiajs/react';
-import React, { useState } from 'react'
+import { Link, router } from '@inertiajs/react';
+import React, { useEffect, useState } from 'react'
 import NavLink from '@/Components/NavLink';
 import Dropdown from '@/Components/Dropdown';
 
 const Approval = ({user}) => {
    const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
+
+   useEffect(() => {
+    if(user.approved === 1){
+      window.location.href = '/home'
+    }
+   }, [])
 
   
   return (

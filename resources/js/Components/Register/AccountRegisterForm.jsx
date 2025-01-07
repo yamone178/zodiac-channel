@@ -3,10 +3,13 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
+import { Link } from '@inertiajs/react';
 
 const AccountRegisterForm = ({ register, data, setData, submit, errors, processing, zodiacs }) => {
   return (
-    <form onSubmit={submit}>
+    <div className=" w-[400px]">
+     <h1 className="mb-3 text-3xl font-bold text-center text-main-900">Create an Account</h1>
+         <form onSubmit={submit}>
       {/* Name Input */}
       <div>
         <InputLabel htmlFor="name" value="Name" />
@@ -109,22 +112,24 @@ const AccountRegisterForm = ({ register, data, setData, submit, errors, processi
       </div>
 
       {/* Submit Buttons */}
-      <div className="flex items-center justify-end mt-4">
+      <div className="flex items-center justify-between mt-4">
+        <Link href="/login" className=' text-main-900'> Already have an account? Login</Link>
         {data.role === 'user' ? (
-          <button type='submit' className="ms-4" disabled={processing}>
+          <button type='submit'   className="px-4 py-2 text-white rounded-md ms-4 bg-main-900" disabled={processing}>
             Register
           </button>
         ) : (
           <button
             type="button"
             onClick={submit}
-            className="px-4 py-2 text-white bg-blue-500 rounded-md ms-4"
+            className="px-4 py-2 text-white rounded-md ms-4 bg-main-900"
           >
             Next
           </button>
         )}
       </div>
     </form>
+    </div>
   );
 };
 

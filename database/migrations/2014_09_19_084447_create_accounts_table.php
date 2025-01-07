@@ -16,11 +16,11 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->enum('role',['user', 'expert'])->default('user');
+            $table->enum('role',['user', 'expert', 'admin'])->default('user');
             $table->boolean('approved')->default(1); ;
             $table->timestamp('joined_at')->useCurrent();
-            $table->foreignId('admin_id')->constrained();
-            $table->foreignId('zodiac_id')->constrained();
+            $table->foreignId('admin_id')->nullable()->constrained();
+            $table->foreignId('zodiac_id')->nullable()->constrained();
             $table->rememberToken();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
