@@ -1,15 +1,18 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import GuestLayout from '@/Layouts/GuestLayout';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
+import AccountRegisterForm from '@/Components/Register/AccountRegisterForm';
 
 export default function ExpertInfoForm({zodiacs, registerData}) {
 
 
     console.log(registerData);
+
+    const [back,setBack] = useState(false);
     
     const { data, setData, post, processing, errors, reset } = useForm({
         
@@ -36,6 +39,11 @@ export default function ExpertInfoForm({zodiacs, registerData}) {
             data: data
         });
     };
+
+    const handleBack = () => {
+        setBack(true);
+        return <AccountRegisterForm registerData={registerData} />
+    }
 
     return (
         <GuestLayout>
@@ -127,7 +135,12 @@ export default function ExpertInfoForm({zodiacs, registerData}) {
 
 
              
-                <div className="flex items-center justify-end mt-4">
+                <div className="flex items-center justify-between mt-4">
+                    
+                    <button 
+                      className="px-4 py-2 text-white rounded-md ms-4 bg-main-900" disabled={processing}>
+                       back
+                    </button>
                    
                      <PrimaryButton className="ms-4" disabled={processing}>
                         Register

@@ -57,7 +57,7 @@ export default function AdminLayout({ user, header, children}) {
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink className=' text-main-900' href={route('home')} active={route().current('home')}>
+                                <NavLink className=' text-main-900' href={route('admin.home')} active={route().current('home')}>
                                         <BiHome fontSize="27px" />
                                         <p className='mt-3'>Home</p>          
                                 </NavLink>
@@ -87,7 +87,7 @@ export default function AdminLayout({ user, header, children}) {
                                                 type="button"
                                                 className="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out bg-white border border-transparent rounded-md hover:text-gray-700 focus:outline-none"
                                             >
-                                                {/* {user.name} */}
+                                                {user.name}
 
                                                 <svg
                                                     className="ms-2 -me-0.5 h-4 w-4"
@@ -106,7 +106,7 @@ export default function AdminLayout({ user, header, children}) {
                                     </Dropdown.Trigger>
 
                                     <Dropdown.Content>
-                                        <Dropdown.Link href={route('profile.view')}>Profile</Dropdown.Link>
+                                        {/* <Dropdown.Link href={route('profile.view')}>Profile</Dropdown.Link> */}
                                         <Dropdown.Link href={route('logout')} method="post" as="button">
                                             Log Out
                                         </Dropdown.Link>
@@ -175,7 +175,7 @@ export default function AdminLayout({ user, header, children}) {
             )} */}
 
             <main
-            className=' px-[200px] py-[50px]'
+            className=' px-[50px] py-[50px]'
             >{children}</main>
         </div>
     );

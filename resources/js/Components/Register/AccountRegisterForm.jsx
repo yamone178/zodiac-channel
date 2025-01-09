@@ -81,7 +81,7 @@ const AccountRegisterForm = ({ register, data, setData, submit, errors, processi
           id="role"
           name="role"
           value={data.role}
-          className="block w-full mt-1"
+          className="block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
           onChange={(e) => setData('role', e.target.value)}
           required
         >
@@ -98,7 +98,7 @@ const AccountRegisterForm = ({ register, data, setData, submit, errors, processi
           id="zodiac"
           name="zodiac"
           value={data.zodiac}
-          className="block w-full mt-1"
+          className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
           onChange={(e) => setData('zodiac', e.target.value)}
           required
         >

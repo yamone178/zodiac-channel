@@ -17,9 +17,9 @@ const ViewExpertCard = ({expert, clickRef}) => {
             </div>
 
             <div className="flex flex-col gap-2">
-                <p className='ld '>Expertise -   {expert.expertise}</p>
-                <p>DOB - {expert.dob}</p>
-                <p>About - { expert.about_me}</p>
+                <p className='text-center text-main-900'>Expertise -   {expert.expertise}</p>
+                <p className='text-center text-main-900'>DOB - {expert.dob}</p>
+                <p className='text-justify whitespace-pre-wrap'>About - { expert.about_me}</p>
             </div>
 
         </div>

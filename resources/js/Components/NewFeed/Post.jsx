@@ -21,10 +21,6 @@ const Post = (props) => {
     const pathName = window.location.pathname
 
     console.log(pathName);
-    
-
-    
-
 
     const {data, setData, post, processing, errors } = useForm({
                
@@ -154,10 +150,10 @@ const Post = (props) => {
                
             </div>}
 
-            <Link href={route('post.show',singlePost.id)} className='mt-3 text-justify whitespace-pre-line text-black/75'>
+           { singlePost.caption && <Link href={route('post.show',singlePost.id)} className='mt-3 text-justify whitespace-pre-line text-black/75'>
                 { route().current('home') ? useLimitedWords(singlePost.caption, 5): singlePost.caption}
                 {/* <Link  href={route('post.show',singlePost.id)}  className='text-black '> .....</Link> */}
-            </Link> 
+            </Link> }
 
             <div className="flex gap-8 mx-3 my-3">
            

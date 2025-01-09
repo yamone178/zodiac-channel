@@ -1,6 +1,7 @@
 import AdminLayout from '@/Layouts/AdminLayout'
 import { usePage, Link } from '@inertiajs/react'
 import React from 'react'
+import NoAccount from '../Followers/NoAccount'
 
 const Users = ({users, pagination}) => {
 
@@ -13,7 +14,7 @@ const Users = ({users, pagination}) => {
 >
     <div className="flex flex-col">
         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+           { users.length > 0 ? <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
                 <div className="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg">
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50">
@@ -110,7 +111,8 @@ const Users = ({users, pagination}) => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> : 
+            <NoAccount />}
         </div>
     </div>
 </AdminLayout>

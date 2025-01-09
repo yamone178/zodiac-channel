@@ -1,32 +1,52 @@
-import React from 'react';
+import React, { useState } from 'react';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
+import TextArea from '../TextArea';
 
-const ExpertRegister = ({ data, setData, submit, errors, processing }) => {
+const ExpertRegister = ({ data, setData, submit, errors, processing, next }) => {
+
+  const [showImg, setShowImg] = useState()
+
+  const handleImage = (e) => {
+    e.preventDefault()
+    setData('profile_picture', e.target.files[0])
+    
+    setShowImg(URL.createObjectURL(e.target.files[0]))
+
+    console.log(showImg);
+    
+  }
+  
   return (
-    <form onSubmit={submit}>
-      <div>
+    <div className=" w-[400px]">
+       <form onSubmit={submit}>
+      <div className='flex items-center justify-between gap-3 mb-3'>
+        { showImg && <img src={showImg} alt=""  className=' w-[100px] h-[100px] rounded-full object-cover border border-main-900'/>}
+        <div className="">
         <InputLabel htmlFor="profile_picture" value="Profile Picture" />
-        <input
+        <TextInput
           id="profile_picture"
           name="profile_picture"
-          className="block w-full mt-1"
+          className="block w-full mt-2 mb-3 "
           type="file"
-          onChange={(e) => setData('profile_picture', e.target.files[0])}
+          onChange={handleImage}
           required
         />
         <InputError message={errors.profile_picture} className="mt-2" />
+        </div>
+
+       
       </div>
 
       <div>
         <InputLabel htmlFor="no_of_exp" value="Number of Experiences" />
-        <input
+        <TextInput
           id="no_of_exp"
           name="no_of_exp"
           value={data.no_of_exp}
-          className="block w-full mt-1"
+          className="block w-full mt-1 mb-3"
           type="number"
           onChange={(e) => setData('no_of_exp', e.target.value)}
           required
@@ -36,11 +56,11 @@ const ExpertRegister = ({ data, setData, submit, errors, processing }) => {
 
       <div>
         <InputLabel htmlFor="dob" value="Date of Birth" />
-        <input
+        <TextInput
           id="dob"
           name="dob"
           value={data.dob}
-          className="block w-full mt-1"
+          className="block w-full mt-1 mb-3"
           type="date"
           onChange={(e) => setData('dob', e.target.value)}
           required
@@ -54,7 +74,7 @@ const ExpertRegister = ({ data, setData, submit, errors, processing }) => {
           id="expertise"
           name="expertise"
           value={data.expertise}
-          className="block w-full mt-1"
+          className="block w-full mt-1 mb-3"
           onChange={(e) => setData('expertise', e.target.value)}
           required
         />
@@ -63,7 +83,7 @@ const ExpertRegister = ({ data, setData, submit, errors, processing }) => {
 
       <div>
         <InputLabel htmlFor="about_me" value="About You" />
-        <textarea
+        <TextArea
           id="about_me"
           name="about_me"
           value={data.about_me}
@@ -74,12 +94,20 @@ const ExpertRegister = ({ data, setData, submit, errors, processing }) => {
         <InputError message={errors.about_me} className="mt-2" />
       </div>
 
-      <div className="flex items-center justify-end mt-4">
-        <button type='submit' className="ms-4" disabled={processing}>
+      <div className="flex items-center justify-between mt-4">
+        <button 
+          onClick={next}
+            className="px-4 py-2 border rounded-md text- border-main-900 " disabled={processing}>
+              back
+          </button>
+        <button type='submit' 
+        className="px-4 py-2 text-white rounded-md ms-4 bg-main-900"  disabled={processing}>
           Register
         </button>
       </div>
     </form>
+    </div>
+   
   );
 };
 

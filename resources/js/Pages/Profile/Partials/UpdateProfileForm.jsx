@@ -6,6 +6,7 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { router } from '@inertiajs/react'
 import RoundedImage from '@/Components/RoundedImage';
+import TextArea from '@/Components/TextArea';
 
 
 const UpdateProfileForm = ({ user, clickRef, closeUpdateForm }) => {
@@ -53,24 +54,28 @@ const UpdateProfileForm = ({ user, clickRef, closeUpdateForm }) => {
 
     };
 
+    console.log(userAccount);
+    
 
     return (
         <div className=" fixed h-screen top-0 left-0  z-10 bg-[#8080807d] w-[100%]">
             <form ref={clickRef} onSubmit={submit}
                 className='bg-white h-min top-0 bottom-0 m-auto left-0 inline-block right-0 w-[500px] p-[20px] absolute border-2 shadow-md rounded-xl'>
 
-                <div className=" flex justify-between items-center">
+                <div className="flex items-center justify-center gap-4 mb-3 ">
+                   
+                   { userAccount.profile_picture &&
                     <RoundedImage pf={userAccount.profile_picture_url} className="w-[90px] h-[90px]" id={user.id} />
+                     }
 
-
-                    <div className=' mb-3'>
+                    <div className='mb-3 '>
                         <InputLabel htmlFor="profile_picture" value="profile_picture" />
 
-                        <input
+                        <TextInput
                             id="profile_picture"
                             name="profile_picture"
 
-                            className="block w-full mt-1"
+                            className="block w-full mt-2"
                             type='file'
                             onChange={(e) => setData('profile_picture', e.target.files[0])}
 
@@ -80,11 +85,11 @@ const UpdateProfileForm = ({ user, clickRef, closeUpdateForm }) => {
                     </div>
                 </div>
 
-                <div className=' mb-3 flex  justify-between'>
+                <div className='flex justify-between gap-2 mb-3'>
                     <div>
                         <InputLabel htmlFor="name" value="name" />
 
-                        <input
+                        <TextInput
                             id="name"
                             name="name"
                             value={data.name}
@@ -100,11 +105,11 @@ const UpdateProfileForm = ({ user, clickRef, closeUpdateForm }) => {
                     <div>
                         <InputLabel htmlFor="email" value="email (can't update)" />
 
-                        <input
+                        <TextInput
                             id="email"
                             name="name"
                             value={data.email}
-                            className="block w-full mt-1 bg-yellow-50 border-yellow-600"
+                            className="block w-full mt-1 border-yellow-600 bg-yellow-50"
                             type='email'
                             onChange={(e) => setData('email', e.target.value)}
                             disabled
@@ -115,11 +120,11 @@ const UpdateProfileForm = ({ user, clickRef, closeUpdateForm }) => {
                     </div>
                 </div>
 
-               <div className=' flex justify-between'>
-               <div className=' mb-3'>
+               <div className='flex justify-between gap-2'>
+               <div className='mb-3 '>
                             <InputLabel htmlFor="expertise" value="expertise" />
 
-                            <input
+                            <TextInput
                                 id="expertise"
                                 name="expertise"
 
@@ -132,10 +137,10 @@ const UpdateProfileForm = ({ user, clickRef, closeUpdateForm }) => {
                             <InputError message={errors.profile_picture} className="mt-2" />
                         </div>
 
-                <div className=' mb-3'>
+                <div className='mb-3 '>
                     <InputLabel htmlFor="dob" value="DOB" />
 
-                    <input
+                    <TextInput
                         id="dob"
                         name="dob"
                         value={data.dob}
@@ -149,10 +154,10 @@ const UpdateProfileForm = ({ user, clickRef, closeUpdateForm }) => {
                 </div>
                </div>
 
-                <div className=' mb-3'>
+                <div className='mb-3 '>
                     <InputLabel htmlFor="bio" value="bio" />
 
-                    <textarea
+                    <TextArea
                         id="bio"
                         name="bio"
                         value={data.bio}
@@ -160,7 +165,7 @@ const UpdateProfileForm = ({ user, clickRef, closeUpdateForm }) => {
 
                         onChange={(e) => setData('bio', e.target.value)}
 
-                    > </textarea>
+                    > </TextArea>
 
                     <InputError message={errors.bio} className="mt-2" />
                 </div>
@@ -169,14 +174,14 @@ const UpdateProfileForm = ({ user, clickRef, closeUpdateForm }) => {
 
                     auth.user.role == 'expert' &&
                     <>
-                        <div className=' mb-3'>
+                        <div className='mb-3 '>
                             <InputLabel htmlFor="bio" value="about_me" />
 
                             <textarea
                                 id="about_me"
                                 name="about_me"
                                 value={data.about_me}
-                                className="block w-full  mt-1"
+                                className="block w-full mt-1"
 
                                 onChange={(e) => setData('about_me', e.target.value)}
 
@@ -197,7 +202,7 @@ const UpdateProfileForm = ({ user, clickRef, closeUpdateForm }) => {
 
                 <div className="flex items-center justify-end mt-4 ">
 
-                    <button type='submit' className="ms-4" disabled={processing}>
+                    <button type='submit' className="px-4 py-2 text-white rounded-md ms-4 bg-main-900 " disabled={processing}>
                         Update
                     </button>
 

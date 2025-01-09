@@ -87,6 +87,7 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
+        // dd($request->all());
         $post = new Post();
 
         $post->caption = $request['caption'];

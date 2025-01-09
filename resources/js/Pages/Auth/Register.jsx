@@ -86,6 +86,10 @@ export default function Register({ zodiacs }) {
     router.post(route('expert.register'), formData);
   };
 
+  const next = () => {
+    setShowExpertForm(false);
+  }
+
   return (
     <GuestLayout>
       <Head title="Register" />
@@ -97,6 +101,7 @@ export default function Register({ zodiacs }) {
           data={data}
           submit={expertSubmit}
           processing={processing}
+          next={next}
         />
       ) : (
         <AccountRegisterForm

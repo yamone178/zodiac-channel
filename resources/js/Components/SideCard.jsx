@@ -58,7 +58,7 @@ const SideCard = ({user, zodiac, showModal, showUpdateForm}) => {
         <p className='text-center text-[20px] mt-1 font-semibold'>{user.name
           }</p>
         <p className='flex items-center justify-center mt-1 font-bold text-main-bright'>
-            <TbZodiacLeo fontSize="18px"/>
+            {/* <TbZodiacLeo fontSize="18px"/> */}
             <p className=' text-[18px]   '>{zodiac}</p>
         </p>
 

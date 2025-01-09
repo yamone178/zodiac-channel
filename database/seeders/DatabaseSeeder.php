@@ -22,11 +22,7 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin',
         ]);
 
-        \App\Models\Admin::factory()->create([
-            'name' => 'admin',
-            'email' => 'admin@gmail.com',
-            'password'=> Hash::make('admin@2025'),
-        ]);
+    
 
         $this->call([
             ZodiacSeeder::class,

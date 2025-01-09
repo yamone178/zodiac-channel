@@ -1,9 +1,25 @@
-import React from 'react'
+import { router, usePage } from '@inertiajs/react';
+import React, { useState } from 'react'
 
 const Search = () => {
+
+    
+    
+    const {users, query} = usePage().props
+    const [searchQuery , setSearchQuery] = useState('')
+
+    const handleSearch = (e) => {
+        e.preventDefault()
+        router.get(route('account.search'), { query: searchQuery })
+    }
+
+    if (users) {
+        console.log(users);
+        
+    }
     return (
         <div className="mx-3 xl:w-96">
-            <div className="relative flex flex-wrap items-stretch w-full px-3 py-2 bg-white border rounded-md">
+            <form onSubmit={handleSearch} className="relative flex flex-wrap items-stretch w-full px-3 py-2 bg-white border rounded-md">
                 {/* <!--Search icon--> */}
                 <span
                     className="input-group-text flex items-center whitespace-nowrap border-0 rounded  py-1.5 text-center text-base font-normal text-neutral-700 dark:text-neutral-200"
@@ -24,9 +40,20 @@ const Search = () => {
                     className="relative m-0 block flex-auto rounded focus:border-0 border-0  bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out   focus:outline-none focus:ring-0 "
                     placeholder="Search"
                     aria-label="Search"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                     aria-describedby="button-addon2" />
   
                 
+            </form>
+
+            <div className="">
+                <ul>
+                {
+                users &&
+                users.map((user)=> <li>{user.name}</li>)
+            }
+                </ul>
             </div>
         </div>
     );

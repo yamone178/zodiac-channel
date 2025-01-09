@@ -72,4 +72,41 @@ class AccountController extends Controller
         'reviews' => $processedReviews
         ]);
     }
+
+    public function search(Request $request)
+    {
+       
+        $query = $request->query('query');
+
+        if (!$query) {
+           return Inertia::render('Components/Search',[
+            'users' => [],
+            'query' => null
+           ]);
+        }
+
+        $accounts = Account::where('name', 'LIKE', "%{$query}%")
+                    ->with(['normalUser','expert'] )
+                     ->get();
+
+           
+         $resAccounts =   $accounts->map(function ($acc) {
+
+            if ($acc->role == 'expert') {
+               $acc->expert->profile_picture_url = asset('storage/images/' . $acc->expert->profile_picture);
+            }
+
+            if ($acc->role == 'user') {
+                $acc->normal_user->profile_picture_url = asset('storage/images/' . $acc->normal_user->profile_picture);
+             }
+            
+                 return $acc;
+            });
+            
+        return Inertia::render('Components/Search', [
+        'users' => $resAccounts,
+        'query' => $query,
+    ]);
+
+    }
 }

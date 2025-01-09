@@ -79,7 +79,7 @@ export default function Login({ status, canResetPassword }) {
 
                 <div className="flex items-center justify-between mt-4">
                    
-                <Link href="/login" className=' text-main-900'> Already have an account? Login</Link>
+                <Link href="/register" className=' text-main-900'> Don't have an account? Register</Link>
                     
 
                     <PrimaryButton className="ms-4" disabled={processing}>

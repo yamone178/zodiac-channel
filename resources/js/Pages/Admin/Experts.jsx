@@ -3,6 +3,8 @@ import { usePage, Link, router } from '@inertiajs/react'
 import React, { useRef, useState } from 'react'
 import ViewExpertCard from './ViewExpertCard'
 import { useOutsideClick } from '@/hooks/useOutsideClick'
+import { useLimitedWords } from '@/hooks/useLimitedWord'
+import NoAccount from '../Followers/NoAccount'
 
 const Experts = ({ experts, pagination }) => {
 
@@ -36,8 +38,8 @@ const Experts = ({ experts, pagination }) => {
             header={<h2 className="text-xl font-semibold leading-tight text-gray-800">Experts</h2>}
         >
             <div className="flex flex-col">
-                <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                    <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-10">
+                    { experts.length > 0 ? <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
                         <div className="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg">
                             <table className="min-w-full divide-y divide-gray-200">
                                 <thead className="bg-gray-50">
@@ -118,7 +120,7 @@ const Experts = ({ experts, pagination }) => {
                                                 <div className="text-sm text-gray-900">{expert.dob}</div>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="text-sm text-gray-900">{expert.about_me}</div>
+                                                <div className="text-sm text-gray-900 whitespace-pre-wrap w-[100px]">{ useLimitedWords(expert.about_me,20) }</div>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                             <button
@@ -165,7 +167,8 @@ const Experts = ({ experts, pagination }) => {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> : 
+                    <NoAccount />}
                 </div>
             </div>
         </AdminLayout>
