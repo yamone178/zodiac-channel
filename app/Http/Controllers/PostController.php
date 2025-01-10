@@ -33,7 +33,7 @@ class PostController extends Controller
                 ->where('account_id', Auth::id());
         })
         ->orWhere('account_id', Auth::id())
-        ->with(['zodiacs', 'account', 'likes', 'account.normalUser', 'account.expert'])
+        ->with(['zodiacs', 'account', 'likes','comments', 'account.normalUser', 'account.expert'])
         ->latest()
         ->get();
     
@@ -67,6 +67,7 @@ class PostController extends Controller
         $processedPosts = $posts->map(function ($post) {
             return Post::passProfileImage($post); // Return the processed post
         });
+
         return Inertia::render('Post/AllPost', ['posts'=> $processedPosts]);
     }
 
@@ -129,7 +130,7 @@ class PostController extends Controller
     {
 
 
-        $post = Post::with(['zodiacs', 'likes', 'account', 'account.normalUser', 'account.expert', 'comments.account.normalUser', 'comments.account.expert'])->find($id);
+        $post = Post::with(['zodiacs', 'likes',  'account', 'account.normalUser', 'account.expert', 'comments.account.normalUser', 'comments.account.expert'])->find($id);
 
         $processedPost = Post::passProfileImage($post);
 
@@ -138,7 +139,7 @@ class PostController extends Controller
             return Post::passProfileImage($comment); // Return the processed post
         });
 
-      
+  
       
         return Inertia::render('Post/Show', ['post'=>$processedPost]);
     }

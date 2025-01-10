@@ -20,7 +20,7 @@ const Post = (props) => {
     const singlePost = props.post
     const pathName = window.location.pathname
 
-    console.log(pathName);
+    console.log(singlePost);
 
     const {data, setData, post, processing, errors } = useForm({
                
@@ -36,7 +36,7 @@ const Post = (props) => {
 
     const user = singlePost.account
 
-    console.log(user);
+    
     
   
     useEffect(() => {
@@ -186,7 +186,9 @@ const Post = (props) => {
                 <div className="">
                     <button onClick={()=>setShowCommentBox(true)} className='flex items-center ' variant="ghost" size="sm">
                         <GoComment className="w-6 h-6 mr-2"/>
-                        <span className=' text-[16px]'>Comment</span> 
+                        <span className=' text-[16px]'>{singlePost.comments?.length} 
+                        </span> 
+                        
                     </button>
                      
                      {

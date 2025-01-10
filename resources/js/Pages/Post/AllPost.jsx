@@ -9,6 +9,9 @@ const AllPost = ({ posts }) => {
     const { auth } = usePage().props;
     const account = auth.user.role == 'user' ? auth.user.normal_user : auth.user.expert
 
+    console.log(posts);
+    
+
     return (
         <>
 

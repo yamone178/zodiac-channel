@@ -34,6 +34,7 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        
         $user = $request->user() ? Auth::user()->load(['zodiac', 'expert', 'normalUser','followers', 'followings']) : null;
         
         // Add expert image to the expert data if the user has an expert

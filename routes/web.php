@@ -81,7 +81,8 @@ Route::middleware('auth')->group(function () {
     
         Route::post('/post/{id}/comment', [CommentController::class, 'store'])->name('comment.store');
         Route::patch('/comment/{id}', [CommentController::class, 'update'])->name('comment.update');    
-    
+        Route::delete('/comment/{id}', [CommentController::class, 'destroy'])->name('comment.delete');    
+
         Route::patch('/profile/update', [UserController::class, 'update'])->name('user.update');
         Route::patch('/expert/update', [ExpertController::class, 'update'])->name('expert.update');
     

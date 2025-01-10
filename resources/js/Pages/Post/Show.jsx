@@ -25,7 +25,7 @@ const Show = ({post}) => {
 
                 {
                     post.comments.map((comment)=>
-                          <AllComments key={comment.id} comment={comment} />
+                          <AllComments key={comment.id} comment={comment} account_id={comment.account_id} />
                 )
                 }
 

@@ -12,7 +12,8 @@ const ImageCard = ({pf, showUpdateForm, className, imgClass}) => {
     <img src={pf} alt="" className={`object-cover w-full h-full rounded-full ${imgClass}`}/>
 
             {
-            route().current('home') &&  <div  onClick={showUpdateForm} className="absolute bottom-0 right-0 p-1 bg-white border rounded-full cursor-pointer border-main-900 hover:bg-main-900">
+              !route().current('profile.view') &&  
+            <div  onClick={showUpdateForm} className="absolute bottom-0 right-0 p-1 bg-white border rounded-full cursor-pointer border-main-900 hover:bg-main-900">
             <AiTwotoneEdit className=' text-[20px] text-main-900  hover:text-white ' />
 
                 </div>

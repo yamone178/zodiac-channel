@@ -1,11 +1,11 @@
 import { router, usePage } from '@inertiajs/react';
 import React, { useState } from 'react'
 
-const Search = () => {
+const Search = ({users}) => {
 
     
     
-    const {users, query} = usePage().props
+    // const {users, query} = usePage().props
     const [searchQuery , setSearchQuery] = useState('')
 
     const handleSearch = (e) => {

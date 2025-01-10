@@ -61,16 +61,31 @@ class CommentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCommentRequest $request, Comment $comment)
+    public function update(UpdateCommentRequest $request, $id)
     {
-        
+      
+        $com = Comment::find($id);
+
+     
+        if ($request->data['comment']) {
+           $com->comment = $request->data['comment'];
+
+           $com->update();
+        }
+
+        return redirect()->back()->with('message', 'Comment is updated successfully!');
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Comment $comment)
+    public function destroy($id)
     {
-        //
+        $com = Comment::find($id);
+
+        $com->delete();
+        return redirect()->back()->with('message', 'Comment is deleted successfully!');
+
     }
 }
