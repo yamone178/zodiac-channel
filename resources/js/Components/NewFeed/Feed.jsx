@@ -11,7 +11,7 @@ const Feed = ({posts, zodiacs}) => {
         posts && posts.map((post)=> <Post key={post.id} post={post} zodiacs={zodiacs}/> )
       }
       {
-        posts.length === 0 && <div className='p-4 mx-auto text-xl text-center  bg-gray-200 text-gray-600 rounded mt-[50%]'>
+        posts&& posts.length === 0 && <div className='p-4 mx-auto text-xl text-center  bg-gray-200 text-gray-600 rounded mt-[50%]'>
           No posts yet
           <p >Follow Zodiac Mates and Experts!! </p>
           </div>

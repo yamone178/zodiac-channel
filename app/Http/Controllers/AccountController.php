@@ -92,19 +92,23 @@ class AccountController extends Controller
            
          $resAccounts =   $accounts->map(function ($acc) {
 
+        
+
             if ($acc->role == 'expert') {
                $acc->expert->profile_picture_url = asset('storage/images/' . $acc->expert->profile_picture);
             }
 
             if ($acc->role == 'user') {
-                $acc->normal_user->profile_picture_url = asset('storage/images/' . $acc->normal_user->profile_picture);
+                $acc->normalUser->profile_picture_url = asset('storage/images/' . $acc->normalUser?->profile_picture);
              }
             
                  return $acc;
             });
+
+        
             
-        return Inertia::render('Components/Search', [
-        'users' => $resAccounts,
+        return Inertia::render('Home/Home', [
+        'searchUsers' => $resAccounts,
         'query' => $query,
     ]);
 

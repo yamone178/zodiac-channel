@@ -19,6 +19,7 @@ export default function Authenticated({ user, header, children}) {
     const {flash} = usePage().props
     const [lastMessage, setLastMessage] = useState(null)
     const notify = (message) => toast.success(message);
+    const { globalSearchData } = usePage().props;
     
     useEffect(()=>{
         if (flash?.message) {
@@ -29,7 +30,10 @@ export default function Authenticated({ user, header, children}) {
           }
     },[flash])
 
-  
+    if (globalSearchData) {
+        console.log(globalSearchData);
+        
+    }
 
     return (
         <div  className="min-h-screen bg-main-bg ">
@@ -54,7 +58,7 @@ export default function Authenticated({ user, header, children}) {
                                     </svg>
                                     </div>
                                 </Link>
-                                    <Search />
+                                    <Search searchUsers = {globalSearchData} />
                                 </div>
 
                                 <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">

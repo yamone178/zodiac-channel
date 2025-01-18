@@ -5,9 +5,13 @@ import Feed from '@/Components/NewFeed/Feed';
 import HomeLayout from '@/Layouts/HomeLayout';
 
 
-const Home = ({ posts, zodiacs}) => {
+const Home = ({ posts, zodiacs, searchUsers}) => {
 
-    
+  if(searchUsers)
+    {
+      console.log(searchUsers);
+      
+    }
     return (
          
             <HomeLayout>

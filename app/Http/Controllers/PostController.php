@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use App\Models\Account;
 use App\Models\Comment;
 use App\Models\Expert;
 use App\Models\Like;
@@ -23,9 +24,10 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         
+        self::search($request);
         // Fetch posts with relevant relationships
         $posts = Post::whereIn('account_id', function ($query) {
             $query->select('following_id')
@@ -55,6 +57,45 @@ class PostController extends Controller
         ]);
     }
 
+    public function search($request)
+    {
+       
+        $query = $request->query('query');
+
+        if (!$query) {
+           return Inertia::render('Components/Search',[
+            'users' => [],
+            'query' => null
+           ]);
+        }
+
+        $accounts = Account::where('name', 'LIKE', "%{$query}%")
+                    ->with(['normalUser','expert'] )
+                     ->get();
+
+           
+         $resAccounts =   $accounts->map(function ($acc) {
+
+        
+
+            if ($acc->role == 'expert') {
+               $acc->expert->profile_picture_url = asset('storage/images/' . $acc->expert->profile_picture);
+            }
+
+            if ($acc->role == 'user') {
+                $acc->normalUser->profile_picture_url = asset('storage/images/' . $acc->normalUser?->profile_picture);
+             }
+            
+                 return $acc;
+            });
+
+        
+            
+    //     return Inertia::render('Home/Home', [
+    //     'searchUsers' => $resAccounts,
+    //     'query' => $query,
+    // ]);
+}
 
 
     public function allPosts()

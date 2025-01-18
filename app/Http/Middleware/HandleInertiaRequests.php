@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Account;
 use App\Models\Expert;
 use App\Models\Zodiac;
 use Illuminate\Http\Request;
@@ -61,6 +62,28 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $user
             ],
+             'globalSearchData' => fn () => [
+            'query' => $request->query('query', ''),
+            'searchUsers' => Account::where('name', 'LIKE', "%{$request->query('query', '')}%")
+        ->with(['normalUser', 'expert']) // Load relationships
+        ->get()
+        ->map(function ($account) {
+            // Handle expert role
+            if ($account->role === 'expert' && $account->expert) {
+                $account->expert->profile_picture_url = asset('storage/images/' . $account->expert->profile_picture);
+            } 
+            // Handle normal user role
+            if ($account->role === 'user' && $account->normalUser) {
+                $account->normalUser->profile_picture_url = asset('storage/images/' . optional($account->normalUser)->profile_picture);
+            } 
+            // // Handle default profile picture if none exists
+            // else {
+            //     $account->profile_picture_url = asset('assets/images/default-profile.png');
+            // }
+
+            return $account;
+        }),
+],
             'flash' => [
                 'message' => fn () => $request->session()->get('message')
             ],

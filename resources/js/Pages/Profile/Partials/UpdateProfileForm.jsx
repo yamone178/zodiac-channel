@@ -120,7 +120,7 @@ const UpdateProfileForm = ({ user, clickRef, closeUpdateForm }) => {
                     </div>
                 </div>
 
-               <div className='flex justify-between gap-2'>
+               {/* <div className='flex justify-between gap-2'>
                <div className='mb-3 '>
                             <InputLabel htmlFor="expertise" value="expertise" />
 
@@ -152,7 +152,7 @@ const UpdateProfileForm = ({ user, clickRef, closeUpdateForm }) => {
 
                     <InputError message={errors.profile_picture} className="mt-2" />
                 </div>
-               </div>
+               </div> */}
 
                 <div className='mb-3 '>
                     <InputLabel htmlFor="bio" value="bio" />
