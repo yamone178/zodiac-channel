@@ -6,11 +6,10 @@ import { GoArrowRight } from 'react-icons/go'
 
 const ExpertRecommend = ({expertRecommends}) => {
 
-   console.log(expertRecommends);
    
    
   return (
-    <div className="py-8 w-[280px] bg-white border  rounded-lg px-[30px] h-auto sticky top-[105px]">
+    <div className=" hidden md:block py-8 w-[280px] bg-white border  rounded-lg px-[30px] h-auto sticky top-[105px]">
        <div className="mb-5">
           <h2 className=''>Top Experts</h2>
        </div>

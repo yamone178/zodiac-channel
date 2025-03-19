@@ -5,10 +5,7 @@ import { GoStar, GoStarFill } from 'react-icons/go';
 
 
 const WriteReview = ({expert_id, user_id} ) => {
-    console.log(expert_id, user_id);
-    
-    // const expert_id = expert_id
-
+  
     const {data, setData, post, processing, errors, reset } = useForm({
         'review_text': '',
         'rating': 0,
@@ -25,10 +22,7 @@ const WriteReview = ({expert_id, user_id} ) => {
           ? auth.user.normal_user?.profile_picture_url ? auth.user.normal_user.profile_picture_url : profile
           : auth.user.expert?.profile_picture_url ? auth.user.expert?.profile_picture_url : profile
 
-          console.log(auth);
-          
-
-
+  
     const submit = (e) =>{
         e.preventDefault()
         post(route('review.store'),{
@@ -39,8 +33,6 @@ const WriteReview = ({expert_id, user_id} ) => {
         
     }
    
-    
-
   return (
     <div className='flex w-[800px] m-auto mt-8 justify-between '>
       <RoundedImage id={auth.user.id} pf={pf} className="w-[60px] h-[60px]"  />

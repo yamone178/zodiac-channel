@@ -15,18 +15,13 @@ return new class extends Migration
             $table->id();
             $table->longText('review_text');
             $table->integer('rating')->nullable();
-            // $table->foreignId('user_id')->constrained();
-            // $table->foreignId('expert_id')->constrained();
-
-               $table->unsignedBigInteger('user_id');  // Define the account_id column
-               $table->unsignedBigInteger('expert_id'); // Define the following_id column   
-
-               $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-               $table->foreign('expert_id')->references('id')->on('experts')->onDelete('cascade');
+            $table->unsignedBigInteger('user_id');  
+            $table->unsignedBigInteger('expert_id'); 
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('expert_id')->references('id')->on('experts')->onDelete('cascade');
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      */

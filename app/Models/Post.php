@@ -92,8 +92,7 @@ class Post extends Model
             : [];
         }
 
-       
-
+    
 
         return $post;
     }

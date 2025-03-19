@@ -15,7 +15,7 @@ const DateFormat = ({initialTimeStamp}) => {
 
 
   return (
-    <p className='text-sm text-gray-600'>
+    <p className='text-xs text-gray-600 md:text-sm'>
         {relativeTime}
     </p>
   )

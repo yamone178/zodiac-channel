@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import TextArea from '../TextArea';
 
@@ -15,8 +14,6 @@ const ExpertRegister = ({ data, setData, submit, errors, processing, next }) => 
     
     setShowImg(URL.createObjectURL(e.target.files[0]))
 
-    console.log(showImg);
-    
   }
   
   return (

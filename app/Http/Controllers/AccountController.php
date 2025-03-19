@@ -15,7 +15,6 @@ class AccountController extends Controller
     public function view($id)
     {
      
-
         if (Auth::id() == $id) {
             
            return redirect()->route('profile.view');
@@ -24,9 +23,8 @@ class AccountController extends Controller
         $account = Account::where('id', $id)
                 ->with(['zodiac', 'followers', 'followings', 'expert','normalUser'])
                 ->first();
-        
-                
 
+            
         $posts = Post::where('account_id', $id)
         ->with(['zodiacs', 'account', 'likes', 'comments', 'account.normalUser', 'account.expert'])
         ->latest()
@@ -49,7 +47,10 @@ class AccountController extends Controller
             return Post::passProfileImage($post); // Return the processed post
         });
 
-        $reviews = Review::where('expert_id', $id )
+        $expert_id = $account->role == 'expert' ? $account->expert->id : $account->normalUser->id;
+
+
+        $reviews = Review::where('expert_id', $expert_id )
                     -> with(['expert','user.account'])
                     ->latest()->get();
 

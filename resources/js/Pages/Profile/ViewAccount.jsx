@@ -3,39 +3,20 @@ import { usePage } from '@inertiajs/react';
 import React, { useEffect, useState } from 'react'
 import AccountCard from './AccountCard';
 import ProfilePost from '@/Components/ProfilePost';
-import { Link } from '@inertiajs/react';
-import { redirect } from 'react-router';
-import WriteReview from '@/Components/Reviews/WriteReview';
-import FlashMessage from '@/Components/FlashMessage';
-import { toast, ToastContainer } from 'react-toastify';
-import ReviewCard from '@/Components/Reviews/ReviewCard';
 import Reviews from '@/Components/Reviews/Reviews';
 
 const ViewAccount = ({ posts, pfAccount, follow, reviews }) => {
 
-
-  console.log(reviews);
-
-
-
   const { auth, flash } = usePage().props;
-
-  console.log(auth.user);
 
 
   const [showAll, setShowAll] = useState(false)
 
   const [AllReviews, setAllReviews] = useState(false)
 
-  const account = auth.user.role == 'user' ? auth.user.normal_user : auth.user.expert
+  const account = pfAccount.role == 'user' ? pfAccount.normal_user : pfAccount.expert
 
   const postCount = posts.length
-
-  // const notify = (message) => toast.success(message);
-
-  // if (flash.message) {
-  //   notify(flash.message)
-  // }
 
   return (
     <AuthenticatedLayout
@@ -51,26 +32,17 @@ const ViewAccount = ({ posts, pfAccount, follow, reviews }) => {
 
 
         {
-          account.about_me && <div className="px-[50px] py-[40px] w-[800px] mx-auto ">
-            <h2 className='mb-3 text-xl font-semibold'>About Me</h2>
-            <p>{account.about_me}</p>
-
+          account.about_me && <div className="px-[50px] py-[40px] w-full md:w-[800px] mx-auto flex justify-between">
+            <div>
+              <h2 className='mb-3 text-xl font-semibold'>About Me</h2>
+              <p className='text-justify whitespace-pre-line'>{account.about_me}</p>
+            </div>
           </div>
         }
 
-        {/* {
-      pfAccount.role == 'expert' &&
-      <WriteReview expert_id={pfAccount.expert.id} user_id={auth.user.normal_user.id}/>
-     } */}
-
-
         {
-          pfAccount.role == 'expert' && reviews && <Reviews AllReviews={AllReviews} setAllReviews={setAllReviews} pfAccount={pfAccount} reviews={reviews} />
+         pfAccount.role == 'expert' && <Reviews AllReviews={AllReviews} setAllReviews={setAllReviews} pfAccount={pfAccount} reviews={reviews} />
         }
-
-
-
-
 
         {!AllReviews && <div>
           {

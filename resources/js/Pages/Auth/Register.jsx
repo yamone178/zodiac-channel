@@ -33,7 +33,7 @@ export default function Register({ zodiacs }) {
   const validateAccountForm = () => {
     const accountErrors = {};
     const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-  
+
     if (!data.name) accountErrors.name = 'Name is required';
     if (!data.email) {
       accountErrors.email = 'Email is required';
@@ -44,7 +44,7 @@ export default function Register({ zodiacs }) {
     if (data.password !== data.password_confirmation) accountErrors.password_confirmation = 'Passwords do not match';
     if (!data.role) accountErrors.role = 'Role is required';
     if (!data.zodiac) accountErrors.zodiac = 'Zodiac is required';
-    
+
     return accountErrors;
   };
 
@@ -52,23 +52,23 @@ export default function Register({ zodiacs }) {
     e.preventDefault();
 
     console.log('hello');
-    
+
     if (data.role === 'expert') {
       console.log(data);
-     
-      
+
+
       const accountErrors = validateAccountForm();
-    
+
 
       if (Object.keys(accountErrors).length > 0) {
         Object.keys(accountErrors).forEach((key) => {
           setError(key, accountErrors[key]);
         });
       } else {
-     
+
         setShowExpertForm(true);
 
-        
+
       }
     } else {
       post(route('register'));
@@ -78,7 +78,7 @@ export default function Register({ zodiacs }) {
   const expertSubmit = (e) => {
     e.preventDefault();
     console.log('hello');
-    
+
     const formData = new FormData();
     Object.keys(data).forEach((key) => {
       formData.append(`data[${key}]`, data[key]);

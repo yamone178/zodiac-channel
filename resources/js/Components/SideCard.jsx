@@ -1,26 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react'
-import testImg from '../../../public/assets/images/test.jpg'
-import { TbZodiacLeo } from "react-icons/tb";
 import { FiPlusCircle } from "react-icons/fi";
 import BtnConnections from './BtnConnections';
-import { useOutsideClick } from '@/hooks/useOutsideClick';
-// import { LiaEdit } from "react-icons/lia";
-import { AiTwotoneEdit } from "react-icons/ai";
-
 import profile from '../../../public/assets/images/profile-image.jpg'
 import ImageCard from './ImageCard';
 import { usePage } from '@inertiajs/react';
 
-
-
 const SideCard = ({user, zodiac, showModal, showUpdateForm}) => {
-
-  console.log(user);
 
   const [pf, setPf] = useState(profile)
 
   const {auth} = usePage().props
-
   
   useEffect(() => {
 
@@ -35,9 +24,9 @@ const SideCard = ({user, zodiac, showModal, showUpdateForm}) => {
   
   const clickRef = useRef()
   
- 
+
   return (
-    <div ref={clickRef} className="py-8 w-[280px] bg-white border  rounded-lg flex sticky top-[105px] justify-center">
+    <div ref={clickRef} className=" py-4 md:py-8 w-full md:w-[280px] bg-white border  rounded-lg flex sticky top-[105px] justify-center">
          <div className=""> 
           <ImageCard className="mx-auto"
            pf={pf} showUpdateForm={showUpdateForm}/>
@@ -51,9 +40,7 @@ const SideCard = ({user, zodiac, showModal, showUpdateForm}) => {
                  Please Update Your Profile !
             </div>
             </>
-
-            
-        
+     
         }
         <p className='text-center text-[20px] mt-1 font-semibold'>{user.name
           }</p>
@@ -70,11 +57,13 @@ const SideCard = ({user, zodiac, showModal, showUpdateForm}) => {
             className=' px-[30px] py-[8px] bg-main-900 text-white rounded-lg cursor-pointer'>Create a post</p>
         </div>
 
-         <hr className='h-[2px] bg-gray-500' />
-            <BtnConnections><p>Your Experts</p> <p className=' text-main-bright'>{auth.user.followers.length}</p></BtnConnections>
-            <BtnConnections><p>Your Follower Mates</p > <p className=' text-main-bright'>{auth.user.followers.length}</p></BtnConnections>
-            <BtnConnections><p>Your Following Mates</p> <p className=' text-main-bright'>{auth.user.followings.length}</p></BtnConnections>
         
+          <div className="hidden md:block">
+          <hr className='h-[2px] bg-gray-500' />
+            <BtnConnections><p>Followers</p > <p className=' text-main-bright'>{auth.user.followers.length}</p></BtnConnections>
+            <BtnConnections><p>Followings</p> <p className=' text-main-bright'>{auth.user.followings.length}</p></BtnConnections>
+        
+          </div>
 
     </div>
     </div>

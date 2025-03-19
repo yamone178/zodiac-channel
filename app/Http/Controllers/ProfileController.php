@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
-use App\Models\Expert;
 use App\Models\Post;
 use App\Models\Review;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -17,40 +16,40 @@ use Inertia\Response;
 class ProfileController extends Controller
 {
 
-    
+
     public function view()
     {
         $posts = Post::where('account_id', Auth::id())
-        ->with(['zodiacs', 'account', 'likes', 'comments', 'account.normalUser', 'account.expert'])
-        ->latest()
-        ->get();
+            ->with(['zodiacs', 'account', 'likes', 'comments', 'account.normalUser', 'account.expert'])
+            ->latest()
+            ->get();
 
-         $authExpertId = Auth::user()->role == 'expert' ? Auth::user()->expert->id : Auth::user()->normalUser->id;
+        $authExpertId = Auth::user()->role == 'expert' ? Auth::user()->expert->id : Auth::user()->normalUser->id;
 
         // dd($authExpertId);  
 
 
-        $reviews = Review::where('expert_id', $authExpertId)
-                    ->with(['expert','user.account'])
-                    ->latest()->get();
+        $reviews = Auth::user()->role == 'expert' ? Review::where('expert_id', $authExpertId)
+            ->with(['expert', 'user.account'])
+            ->latest()->get() : '';
 
-        
-        $processedReviews = $reviews->map(function ($review) {
-            $pathInfo = pathinfo($review->user->profile_picture);
-            //dd($pathInfo);
-            $filename = $pathInfo['basename'];
-            // dd($review->user->profile_picture);
-            $review->user->profile_picture_url = asset('storage/images/' .$filename);
-            return $review;
-        });
-
-        
+        if ($reviews) {
+            $processedReviews =  $reviews->map(function ($review) {
+                $pathInfo = pathinfo($review->user->profile_picture);
+                //dd($pathInfo);
+                $filename = $pathInfo['basename'];
+                // dd($review->user->profile_picture);
+                $review->user->profile_picture_url = asset('storage/images/' . $filename);
+                return $review;
+            });
+        } else {
+            $processedReviews = '';
+        }
     
-
         $processedPosts = $posts->map(function ($post) {
             return Post::passProfileImage($post); // Return the processed post
         });
-        return Inertia::render('Profile/Profile', ['posts'=> $processedPosts, 'reviews'=>$processedReviews]);
+        return Inertia::render('Profile/Profile', ['posts' => $processedPosts, 'reviews' => $processedReviews]);
     }
     /**
      * Display the user's profile form.
@@ -68,7 +67,7 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        
+
 
         $request->user()->fill($request->validated());
 

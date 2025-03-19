@@ -7,15 +7,15 @@ import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
 import AccountRegisterForm from '@/Components/Register/AccountRegisterForm';
 
-export default function ExpertInfoForm({zodiacs, registerData}) {
+export default function ExpertInfoForm({ zodiacs, registerData }) {
 
 
     console.log(registerData);
 
-    const [back,setBack] = useState(false);
-    
+    const [back, setBack] = useState(false);
+
     const { data, setData, post, processing, errors, reset } = useForm({
-        
+
         profile_picture: '',
         about_me: '',
         dob: '',
@@ -26,16 +26,16 @@ export default function ExpertInfoForm({zodiacs, registerData}) {
     });
 
     console.log(data);
-    
-    
+
+
 
     const submit = (e) => {
         e.preventDefault();
 
         console.log(data);
-        
 
-        post(route('register'),{
+
+        post(route('register'), {
             data: data
         });
     };
@@ -57,7 +57,7 @@ export default function ExpertInfoForm({zodiacs, registerData}) {
                     <input
                         id="profile_picture"
                         name="profile_picture"
-                       
+
                         className="block w-full mt-1"
                         type='file'
                         onChange={(e) => setData('profile_picture', e.target.files[0])}
@@ -107,7 +107,7 @@ export default function ExpertInfoForm({zodiacs, registerData}) {
                         name="expertise"
                         value={data.expertise}
                         className="block w-full mt-1"
-                        
+
                         onChange={(e) => setData('expertise', e.target.value)}
                         required
                     />
@@ -130,23 +130,23 @@ export default function ExpertInfoForm({zodiacs, registerData}) {
 
                     <InputError message={errors.profile_picture} className="mt-2" />
                 </div>
-                
-              
 
 
-             
+
+
+
                 <div className="flex items-center justify-between mt-4">
-                    
-                    <button 
-                      className="px-4 py-2 text-white rounded-md ms-4 bg-main-900" disabled={processing}>
-                       back
+
+                    <button
+                        className="px-4 py-2 text-white rounded-md ms-4 bg-main-900" disabled={processing}>
+                        back
                     </button>
-                   
-                     <PrimaryButton className="ms-4" disabled={processing}>
+
+                    <PrimaryButton className="ms-4" disabled={processing}>
                         Register
-                    </PrimaryButton> 
-                
-                    
+                    </PrimaryButton>
+
+
                 </div>
             </form>
         </GuestLayout>

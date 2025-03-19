@@ -11,8 +11,6 @@ import TextArea from '@/Components/TextArea';
 
 const UpdateProfileForm = ({ user, clickRef, closeUpdateForm }) => {
 
-    console.log(user);
-
     const userAccount = user.role == 'user' ? user.normal_user : user.expert
     const { data, setData, post, processing, errors, reset, put } = useForm({
         name: user.name,
@@ -24,7 +22,6 @@ const UpdateProfileForm = ({ user, clickRef, closeUpdateForm }) => {
         about_me: userAccount.about_me
     });
 
-    console.log(data);
 
     const { auth } = usePage().props
 
@@ -32,9 +29,6 @@ const UpdateProfileForm = ({ user, clickRef, closeUpdateForm }) => {
 
     const submit = (e) => {
         e.preventDefault();
-
-        console.log(data);
-
 
         if (auth.user.role == 'user') {
             router.post(route('user.update'), {
@@ -54,19 +48,17 @@ const UpdateProfileForm = ({ user, clickRef, closeUpdateForm }) => {
 
     };
 
-    console.log(userAccount);
-    
 
     return (
         <div className=" fixed h-screen top-0 left-0  z-10 bg-[#8080807d] w-[100%]">
             <form ref={clickRef} onSubmit={submit}
-                className='bg-white h-min top-0 bottom-0 m-auto left-0 inline-block right-0 w-[500px] p-[20px] absolute border-2 shadow-md rounded-xl'>
+                className='bg-white h-min top-0 bottom-0 m-auto left-0 inline-block right-0 w-[360px] md:w-[500px] p-[20px] absolute border-2 shadow-md rounded-xl'>
 
                 <div className="flex items-center justify-center gap-4 mb-3 ">
-                   
-                   { userAccount.profile_picture &&
-                    <RoundedImage pf={userAccount.profile_picture_url} className="w-[90px] h-[90px]" id={user.id} />
-                     }
+
+                    {userAccount.profile_picture &&
+                        <RoundedImage pf={userAccount.profile_picture_url} className="w-[90px] h-[90px]" id={user.id} />
+                    }
 
                     <div className='mb-3 '>
                         <InputLabel htmlFor="profile_picture" value="profile_picture" />
@@ -85,7 +77,7 @@ const UpdateProfileForm = ({ user, clickRef, closeUpdateForm }) => {
                     </div>
                 </div>
 
-                <div className='flex justify-between gap-2 mb-3'>
+                <div className='flex flex-col justify-between gap-2 mb-3 md:flex-row'>
                     <div>
                         <InputLabel htmlFor="name" value="name" />
 
@@ -113,46 +105,14 @@ const UpdateProfileForm = ({ user, clickRef, closeUpdateForm }) => {
                             type='email'
                             onChange={(e) => setData('email', e.target.value)}
                             disabled
-                          
+
                         />
 
                         <InputError message={errors.email} className="mt-2" />
                     </div>
                 </div>
 
-               {/* <div className='flex justify-between gap-2'>
-               <div className='mb-3 '>
-                            <InputLabel htmlFor="expertise" value="expertise" />
-
-                            <TextInput
-                                id="expertise"
-                                name="expertise"
-
-                                className="block w-full mt-1"
-                                type='text'
-                                onChange={(e) => setData('expertise', e.target.value)}
-
-                            />
-
-                            <InputError message={errors.profile_picture} className="mt-2" />
-                        </div>
-
-                <div className='mb-3 '>
-                    <InputLabel htmlFor="dob" value="DOB" />
-
-                    <TextInput
-                        id="dob"
-                        name="dob"
-                        value={data.dob}
-                        className="block w-full mt-1"
-                        type='date'
-                        onChange={(e) => setData('dob', e.target.value)}
-
-                    />
-
-                    <InputError message={errors.profile_picture} className="mt-2" />
-                </div>
-               </div> */}
+               
 
                 <div className='mb-3 '>
                     <InputLabel htmlFor="bio" value="bio" />
@@ -190,13 +150,11 @@ const UpdateProfileForm = ({ user, clickRef, closeUpdateForm }) => {
                             <InputError message={errors.bio} className="mt-2" />
                         </div>
 
-                        
+
                     </>
 
 
                 }
-
-
 
 
 

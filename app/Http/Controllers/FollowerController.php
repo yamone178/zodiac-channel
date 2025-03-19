@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Follower;
-use App\Http\Requests\StoreFollowerRequest;
 use App\Http\Requests\UpdateFollowerRequest;
 use App\Models\Account;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -15,14 +13,7 @@ use function PHPSTORM_META\map;
 
 class FollowerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
+   
     /**
      * Show the form for creating a new resource.
      */
@@ -56,9 +47,6 @@ class FollowerController extends Controller
     public function expertFollow()
     {
         $userId = Auth::id();
-
-        
-
         
         $friends = Account::where('role', 'expert')
                 ->where('id', '!=', $userId)
@@ -217,35 +205,5 @@ public function getExpertFriends()
          
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Follower $follower)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Follower $follower)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateFollowerRequest $request, Follower $follower)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Follower $follower)
-    {
-        //
-    }
+  
 }

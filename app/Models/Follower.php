@@ -24,20 +24,7 @@ class Follower extends Model
         return $this->belongsTo(Account::class, 'account_id');
     }
 
-    // public function getProcessedProfilePictureAttribute()
-    // {
-    //     $profilePicture = $this->normalUser?->profile_picture 
-    //         ?? $this->expert?->profile_picture;
-    
-    //     if ($profilePicture) {
-    //         $pathInfo = pathinfo($profilePicture);
-    //         return asset('storage/images/' . $pathInfo['basename']);
-    //     }
-    
-    //     return null;
-    // }
-    
-
+   
         public static function passFriendImage($friend)
         {
                 // // Process normal user profile picture

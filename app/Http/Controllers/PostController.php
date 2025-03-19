@@ -4,19 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
-use App\Http\Requests\UpdatePostRequest;
 use App\Models\Account;
 use App\Models\Comment;
-use App\Models\Expert;
 use App\Models\Like;
 use App\Models\Zodiac;
 use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
-
-use function PHPSTORM_META\map;
 
 class PostController extends Controller
 {
@@ -26,7 +20,7 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        
+
         self::search($request);
         // Fetch posts with relevant relationships
         $posts = Post::whereIn('account_id', function ($query) {
@@ -34,96 +28,80 @@ class PostController extends Controller
                 ->from('followers')
                 ->where('account_id', Auth::id());
         })
-        ->orWhere('account_id', Auth::id())
-        ->with(['zodiacs', 'account', 'likes','comments', 'account.normalUser', 'account.expert'])
-        ->latest()
-        ->get();
-    
+            ->orWhere('account_id', Auth::id())
+            ->with(['zodiacs', 'account', 'likes', 'comments', 'account.normalUser', 'account.expert'])
+            ->latest()
+            ->get();
+
         // Fetch all zodiacs
-        $zodiacs = Zodiac::all();    
+        $zodiacs = Zodiac::all();
         // Process posts
         $processedPosts = $posts->map(function ($post) {
-           
+
             return Post::passProfileImage($post); // Return the processed post
         });
 
 
-       
+
 
         return Inertia::render('Home/Home', [
             'posts' => $processedPosts,
             'zodiacs' => $zodiacs,
-           
+
         ]);
     }
 
     public function search($request)
     {
-       
+
         $query = $request->query('query');
 
         if (!$query) {
-           return Inertia::render('Components/Search',[
-            'users' => [],
-            'query' => null
-           ]);
+            return Inertia::render('Components/Search', [
+                'users' => [],
+                'query' => null
+            ]);
         }
 
         $accounts = Account::where('name', 'LIKE', "%{$query}%")
-                    ->with(['normalUser','expert'] )
-                     ->get();
+            ->with(['normalUser', 'expert'])
+            ->get();
 
-           
-         $resAccounts =   $accounts->map(function ($acc) {
 
-        
+        $resAccounts =   $accounts->map(function ($acc) {
+
+
 
             if ($acc->role == 'expert') {
-               $acc->expert->profile_picture_url = asset('storage/images/' . $acc->expert->profile_picture);
+                $acc->expert->profile_picture_url = asset('storage/images/' . $acc->expert->profile_picture);
             }
 
             if ($acc->role == 'user') {
                 $acc->normalUser->profile_picture_url = asset('storage/images/' . $acc->normalUser?->profile_picture);
-             }
-            
-                 return $acc;
-            });
+            }
 
-        
-            
-    //     return Inertia::render('Home/Home', [
-    //     'searchUsers' => $resAccounts,
-    //     'query' => $query,
-    // ]);
-}
+            return $acc;
+        });
+
+
+    }
 
 
     public function allPosts()
     {
         $posts = Post::where('account_id', Auth::id())
-        ->with(['zodiacs', 'account', 'likes', 'comments', 'account.normalUser', 'account.expert'])
-        ->latest()
-        ->get();
-    
+            ->with(['zodiacs', 'account', 'likes', 'comments', 'account.normalUser', 'account.expert'])
+            ->latest()
+            ->get();
+
         $processedPosts = $posts->map(function ($post) {
             return Post::passProfileImage($post); // Return the processed post
         });
 
-        return Inertia::render('Post/AllPost', ['posts'=> $processedPosts]);
+        return Inertia::render('Post/AllPost', ['posts' => $processedPosts]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-       
-        
-        
-
-        // return Inertia::render('Home/Home', ['zodiacs'=> $zodiacs]);
-    }
-
+ 
     /**
      * Store a newly created resource in storage.
      */
@@ -134,17 +112,17 @@ class PostController extends Controller
 
         $post->caption = $request['caption'];
         // Save image
-        
+
         $images = [];
 
         if ($request->hasFile('images')) {
-         
+
             foreach ($request->file('images') as $image) {
-                $fileName = uniqid().$image->getClientOriginalName();
+                $fileName = uniqid() . $image->getClientOriginalName();
                 $image->storeAs('public/images', $fileName);
-                
+
                 // $image->move(public_path().'/images/',$fileName);
-    
+
                 $images[] = $fileName;
             }
         }
@@ -159,9 +137,8 @@ class PostController extends Controller
         if ($request->has('tagged_zodiacs')) {
             $post->zodiacs()->attach($request['tagged_zodiacs']);
         }
-           
-        return redirect()->route('home')->with('message', 'Your post was created successfully!');
 
+        return redirect()->route('home')->with('message', 'Your post was created successfully!');
     }
 
     /**
@@ -180,16 +157,9 @@ class PostController extends Controller
             return Post::passProfileImage($comment); // Return the processed post
         });
 
-  
-      
-        return Inertia::render('Post/Show', ['post'=>$processedPost]);
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Post $post)
-    {
+
+        return Inertia::render('Post/Show', ['post' => $processedPost]);
     }
 
     /**
@@ -199,24 +169,24 @@ class PostController extends Controller
     {
         $post = Post::where('id', $id)->first();
         $post->caption = $request->data['caption'];
-    
+
         // Decode the old images from the database
         $oldImages = json_decode($post->images, true) ?: []; // Ensure it's an array
         $updatedImages = $oldImages;
-    
+
         // Handle deletion of images
         if (!empty($request->data['del_images'])) {
             $delImagesIndex = $request->data['del_images'];
-    
+
             // Remove images by their indices
             $updatedImages = array_filter($updatedImages, function ($key) use ($delImagesIndex) {
                 return !in_array($key, $delImagesIndex);
             }, ARRAY_FILTER_USE_KEY);
-    
+
             // Reindex the array
             $updatedImages = array_values($updatedImages);
         }
-    
+
         // Handle new images from the request
         if ($request->hasFile('data.images')) {
             foreach ($request->file('data.images') as $image) {
@@ -231,22 +201,22 @@ class PostController extends Controller
                 }
             }
         }
-    
+
         // Update the post's images with the final array
         $post->images = json_encode($updatedImages);
-    
+
         // Update the account ID and save the post
         $post->account_id = Auth::id();
         $post->save();
-    
+
         // Sync tagged zodiacs if provided
         if (!empty($request->data['tagged_zodiacs'])) {
             $post->zodiacs()->sync($request->data['tagged_zodiacs']);
         }
-    
+
         return redirect()->back()->with('message', 'Post updated successfully!');
     }
-    
+
 
     private function isPrivateUrl($image)
     {
@@ -258,7 +228,7 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-      
+
         $post = Post::findOrFail($id);
 
         if ($post) {
@@ -266,8 +236,6 @@ class PostController extends Controller
             Comment::where('post_id', $post->id)?->delete();
             $post->delete();
         }
-      
-
 
         return redirect()->back()->with('message', 'Post Deleted successfully!');
     }

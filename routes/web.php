@@ -13,7 +13,6 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -47,11 +46,11 @@ Route::post('/expert-register', [RegisteredUserController::class, 'expertStore']
 
 
 Route::middleware('auth')->group(function () {
-  
+
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
- 
+
     Route::get('/view-profile/{id}', [AccountController::class, 'view'])->name('account.view');
 
     // Route::get('/home', function () {
@@ -65,54 +64,53 @@ Route::middleware('auth')->group(function () {
         Route::get('/posts', [PostController::class, 'allposts'])->name('post.index');
         Route::patch('/post/{id}', [PostController::class, 'update'])->name('post.update');
         Route::delete('/post/{id}', [PostController::class, 'destroy'])->name('post.delete');
-    
-        Route::get('/horoscope',[HoroscopeController::class, 'index'])->name('horoscope');
-        Route::get('/zodiac-mates',[FollowerController::class, 'create'])->name('zodiac-mate');
-        Route::get('/your-zodiac-mates',[FollowerController::class, 'getZodiacsFriends'])->name('your-zodiac-mates');
-        Route::get('/your-experts',[FollowerController::class, 'getExpertFriends'])->name('your-experts');
-    
-        Route::get('/experts',[FollowerController::class, 'expertFollow'])->name('expert');
-    
+
+        Route::get('/horoscope', [HoroscopeController::class, 'index'])->name('horoscope');
+        Route::get('/zodiac-mates', [FollowerController::class, 'create'])->name('zodiac-mate');
+        Route::get('/your-zodiac-mates', [FollowerController::class, 'getZodiacsFriends'])->name('your-zodiac-mates');
+        Route::get('/your-experts', [FollowerController::class, 'getExpertFriends'])->name('your-experts');
+
+        Route::get('/experts', [FollowerController::class, 'expertFollow'])->name('expert');
+
         Route::post('/zodiac-mates', [FollowerController::class, 'store'])->name('zodiac-mates.store');
-    
+
         Route::post('/zodiac-mates/{id}/follow', [FollowerController::class, 'follow'])->name('zodiac-mates.follow');
         Route::post('/zodiac-mates/{id}/unfollow', [FollowerController::class, 'unfollow'])->name('zodiac-mates.unfollow');
         Route::post('/post/{id}/like', [LikeController::class, 'toggleLike'])->name('post.like');
-    
+
         Route::post('/post/{id}/comment', [CommentController::class, 'store'])->name('comment.store');
-        Route::patch('/comment/{id}', [CommentController::class, 'update'])->name('comment.update');    
-        Route::delete('/comment/{id}', [CommentController::class, 'destroy'])->name('comment.delete');    
+        Route::patch('/comment/{id}', [CommentController::class, 'update'])->name('comment.update');
+        Route::delete('/comment/{id}', [CommentController::class, 'destroy'])->name('comment.delete');
 
         Route::patch('/profile/update', [UserController::class, 'update'])->name('user.update');
         Route::patch('/expert/update', [ExpertController::class, 'update'])->name('expert.update');
-    
+
         Route::get('/profile/view', [ProfileController::class, 'view'])->name('profile.view');
-    
+
         Route::post('/review', [ReviewController::class, 'store'])->name('review.store');
         Route::patch('/review/update/{id}', [ReviewController::class, 'update'])->name('review.update');
         Route::delete('/review/del/{id}', [ReviewController::class, 'destroy'])->name('review.delete');
         Route::get('/account/search', [AccountController::class, 'search'])->name('account.search');
-
     });
     // Route::get('/home/post', [PostController::class, 'create'])->name('post.create');
- 
-   
 
-    
 
-    Route::get('/approve',[HomeController::class, 'approval'])->name('approve');
+
+
+
+    Route::get('/approve', [HomeController::class, 'approval'])->name('approve');
 
 
     // admin
 
-  Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/home', [AdminController::class, 'home'])->name('home');
-    Route::get('/experts', [AdminController::class, 'experts'])->name('experts');
-    Route::get('/users', [AdminController::class, 'users'])->name('users');
-    Route::patch('/approve/{id}', [AdminController::class, 'approve'])->name('approve');
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::get('/home', [AdminController::class, 'home'])->name('home');
+        Route::get('/experts', [AdminController::class, 'experts'])->name('experts');
+        Route::get('/users', [AdminController::class, 'users'])->name('users');
+        Route::patch('/approve/{id}', [AdminController::class, 'approve'])->name('approve');
+    });
 });
-});
 
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

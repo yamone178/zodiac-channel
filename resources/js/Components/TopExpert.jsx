@@ -1,6 +1,4 @@
 import React from 'react'
-import testImg from '../../../public/assets/images/test.jpg'
-import { GoPlus } from "react-icons/go";
 import { Link } from '@inertiajs/react';
 
 const TopExpert = ({expert}) => {

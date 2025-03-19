@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('profile_picture')->nullable();
             $table->date('dob')->nullable();
             $table->foreignId('account_id')->constrained();
-             
             $table->timestamps();
         });
     }

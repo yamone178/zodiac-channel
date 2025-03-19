@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use App\Models\Expert;
-use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -13,7 +12,13 @@ class AdminController extends Controller
 {
     public function home()
     {
-        return Inertia::render('Admin/AdminHome');
+        $totalUsers = Account::where('role', '!=', 'admin')->count();
+
+        $experts = Account::where('role', '!=', 'expert')->count();
+        $users = Account::where('role', '!=', 'user')->count();
+      
+        return Inertia::render('Admin/AdminHome', 
+        ['totalUsers' => $totalUsers, 'experts' => $experts, 'users' => $users]);
     }
 
 
@@ -63,7 +68,7 @@ class AdminController extends Controller
         $user->approved = $request->approved;
         $user->save();
 
-        return redirect()->back();
+        return redirect()->back()->with('message', 'User approved successfully');
     }
    
 }

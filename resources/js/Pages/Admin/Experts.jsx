@@ -8,17 +8,17 @@ import NoAccount from '../Followers/NoAccount'
 
 const Experts = ({ experts, pagination }) => {
 
-    const [ViewCard, setViewCard] = useState(false) 
+    const [ViewCard, setViewCard] = useState(false)
 
     const [selectExpert, setSelectExpert] = useState(null)
 
     const { auth } = usePage().props
 
 
-        const clickRef = useRef()
-    
-  
-        useOutsideClick(clickRef, ()=>setViewCard(false))
+    const clickRef = useRef()
+
+
+    useOutsideClick(clickRef, () => setViewCard(false))
 
     const handleViewCard = (expert) => {
         setViewCard(true)
@@ -26,12 +26,12 @@ const Experts = ({ experts, pagination }) => {
     }
 
     const approveExpert = (id, approved) => {
-        router.post(route('admin.approve',id),{
-            _method: 'patch', 
+        router.post(route('admin.approve', id), {
+            _method: 'patch',
             'approved': approved
         })
     }
-    
+
     return (
         <AdminLayout
             user={auth.user}
@@ -39,7 +39,7 @@ const Experts = ({ experts, pagination }) => {
         >
             <div className="flex flex-col">
                 <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-10">
-                    { experts.length > 0 ? <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                    {experts.length > 0 ? <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
                         <div className="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg">
                             <table className="min-w-full divide-y divide-gray-200">
                                 <thead className="bg-gray-50">
@@ -74,12 +74,12 @@ const Experts = ({ experts, pagination }) => {
                                         >
                                             DOB
                                         </th>
-                                        <th
+                                        {/* <th
                                             scope="col"
                                             className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
                                         >
                                             About
-                                        </th>
+                                        </th> */}
                                         <th
                                             scope="col"
                                             className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
@@ -119,33 +119,27 @@ const Experts = ({ experts, pagination }) => {
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <div className="text-sm text-gray-900">{expert.dob}</div>
                                             </td>
+                                          
                                             <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="text-sm text-gray-900 whitespace-pre-wrap w-[100px]">{ useLimitedWords(expert.about_me,20) }</div>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                            <button
-                                                onClick={() => approveExpert(expert.account.id, !expert.account.approved)}
-                                                  className="text-indigo-600 hover:text-indigo-900">
+                                                <button
+                                                    onClick={() => approveExpert(expert.account.id, !expert.account.approved)}
+                                                    className="text-indigo-600 hover:text-indigo-900">
                                                     {expert.account.approved ? 'Ban' : 'Approve'}
                                                 </button>
                                             </td>
                                             <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
                                                 <button
-                                                onClick={() => handleViewCard(expert)}
-                                                  className="text-indigo-600 hover:text-indigo-900">
+                                                    onClick={() => handleViewCard(expert)}
+                                                    className="text-indigo-600 hover:text-indigo-900">
                                                     View
                                                 </button>
-                                                { ViewCard && <ViewExpertCard expert={selectExpert} setViewCard={setViewCard}  clickRef={clickRef}/>}
+                                                {ViewCard && <ViewExpertCard expert={selectExpert} setViewCard={setViewCard} clickRef={clickRef} />}
 
                                             </td>
 
-
-
-
-                                        
                                         </tr>
 
-                                        
+
                                     ))}
                                 </tbody>
                             </table>
@@ -156,8 +150,8 @@ const Experts = ({ experts, pagination }) => {
                                             key={index}
                                             href={link.url || '#'}
                                             className={`relative inline-flex items-center px-4 py-2 text-sm font-medium ${link.active
-                                                    ? ' bg-main-900 text-white border-main-900'
-                                                    : 'bg-white text-gray-700 border-gray-300'
+                                                ? ' bg-main-900 text-white border-main-900'
+                                                : 'bg-white text-gray-700 border-gray-300'
                                                 } border rounded-md hover:bg-gray-50`}
                                             disabled={!link.url}
                                         >
@@ -167,8 +161,8 @@ const Experts = ({ experts, pagination }) => {
                                 </div>
                             </div>
                         </div>
-                    </div> : 
-                    <NoAccount />}
+                    </div> :
+                        <NoAccount />}
                 </div>
             </div>
         </AdminLayout>

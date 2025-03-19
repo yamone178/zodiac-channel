@@ -9,13 +9,10 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
     public function update(Request $request)
-    {
-
-    
+    {   
         $userAccount = Auth::user()->normalUser; //normalUser
 
         $user = User::where('id', $userAccount->id)->first();
-
 
         if ($request->data['bio'] !== null) {
             $user->bio = $request->data['bio'];
@@ -26,11 +23,6 @@ class UserController extends Controller
         }
     
         $user->account_id = Auth::id();
-        // }
-        
-        // Creating the Expert profile
-       
-        // Handling profile picture upload if provided
 
         $oldImage = $user->profile_picture;
         if ($request->hasFile('data.profile_picture')) {
@@ -50,6 +42,6 @@ class UserController extends Controller
 
         // Saving the expert profile
         $user->update();
-        return redirect()->back();
+        return redirect()->back()->with('message', 'Profile updated successfully');
     }
 }

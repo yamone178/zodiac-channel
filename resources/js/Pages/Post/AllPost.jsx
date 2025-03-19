@@ -10,7 +10,7 @@ const AllPost = ({ posts }) => {
     const account = auth.user.role == 'user' ? auth.user.normal_user : auth.user.expert
 
     console.log(posts);
-    
+
 
     return (
         <>
@@ -21,17 +21,17 @@ const AllPost = ({ posts }) => {
             >
 
                 <div className=" px-[50px] py-[40px]">
-                <AccountCard user={auth.user} />
+                    <AccountCard user={auth.user} />
 
-                
 
-                {
-                    account.about_me && <div className="px-[50px] py-[40px] w-[800px] mx-auto ">
-                        <h2 className='mb-3 text-xl font-semibold'>About Me</h2>
-                        <p>{account.about_me}</p>
 
-                    </div>
-                }
+                    {
+                        account.about_me && <div className="px-[50px] py-[40px] w-[800px] mx-auto ">
+                            <h2 className='mb-3 text-xl font-semibold'>About Me</h2>
+                            <p>{account.about_me}</p>
+
+                        </div>
+                    }
 
                 </div>
                 {

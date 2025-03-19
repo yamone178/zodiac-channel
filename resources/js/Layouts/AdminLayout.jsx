@@ -11,71 +11,75 @@ import { RiStarLine } from "react-icons/ri";
 import { toast, ToastContainer } from 'react-toastify';
 
 
-
-
-export default function AdminLayout({ user, header, children}) {
+export default function AdminLayout({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
-    const {flash} = usePage().props
+    const { flash } = usePage().props
     const [lastMessage, setLastMessage] = useState(null)
+    const { globalSearchData } = usePage().props;
+
     const notify = (message) => toast.success(message);
-    
-    useEffect(()=>{
+
+    useEffect(() => {
         if (flash?.message) {
             console.log(flash.message);
-            
+
             notify(flash.message)
             setLastMessage(flash.message)
-          }
-    },[flash])
+        }
+    }, [flash])
 
-  
+
 
     return (
-        <div  className="min-h-screen bg-main-bg ">
+        <div className="min-h-screen bg-main-bg ">
             <nav className="sticky top-0 z-10 border-gray-100 bg-white/50 backdrop-blur-xl">
                 <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="flex justify-between">
                         <div className="flex">
                             <div className="flex items-center shrink-0">
-                            <Link href="#" className="flex items-center gap-2">
-                                <div className="w-8 h-8">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    className="text-purple-600"
-                                >
-                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                                </svg>
-                                </div>
-                            </Link>
-                                <Search />
+                                <Link href="#" className="flex items-center gap-2">
+                                    <div className="w-8 h-8">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            className="text-purple-600"
+                                        >
+                                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                        </svg>
+
+                                    </div>
+                                    <h2 className='text-xl font-bold'>Zodiac Channel</h2>
+                                </Link>
+                                {/* <Search searchUsers = {globalSearchData} /> */}
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink className=' text-main-900' href={route('admin.home')} active={route().current('home')}>
-                                        <BiHome fontSize="27px" />
-                                        <p className='mt-3'>Home</p>          
-                                </NavLink>
+                        </div>
 
-                        
-                                <NavLink  className=' text-main-900' href={route('admin.users')} active={route().current('admin.users')} >
-                                         <LiaUserFriendsSolid fontSize="27px" />
 
-                                        <p className='mt-3'>Normal Users</p>
-                                </NavLink>
+                        <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                            <NavLink className=' text-main-900' href={route('admin.home')} active={route().current('admin.home')}>
+                                <BiHome fontSize="27px" />
+                                <p className='mt-3'>Home</p>
+                            </NavLink>
 
-                                <NavLink  className=' text-main-900' href={route('admin.experts')}  active={route().current('admin.experts')}>
-                                         <TbUserStar fontSize="27px" />
-                                        <p className='mt-3'>Experts</p>
-                                </NavLink>
 
-                             
-                            </div>
+                            <NavLink className=' text-main-900' href={route('admin.users')} active={route().current('admin.users')} >
+                                <LiaUserFriendsSolid fontSize="27px" />
+
+                                <p className='mt-3'>Zodiac Mates</p>
+                            </NavLink>
+
+                            <NavLink className=' text-main-900' href={route('admin.experts')} active={route().current('admin.experts')}>
+                                <TbUserStar fontSize="27px" />
+                                <p className='mt-3'>Experts</p>
+                            </NavLink>
+
+
                         </div>
 
                         <div className="hidden sm:flex sm:items-center sm:ms-6">
@@ -167,15 +171,9 @@ export default function AdminLayout({ user, header, children}) {
             {
                 <ToastContainer />
             }
-{/* 
-            {header && (
-                <header className="bg-white shadow">
-                    <div className="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">{header}</div>
-                </header>
-            )} */}
-
+       
             <main
-            className=' px-[50px] py-[50px]'
+                className=' px-[50px] py-[50px]'
             >{children}</main>
         </div>
     );

@@ -15,14 +15,12 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('account_id');  // Define the account_id column
             $table->unsignedBigInteger('following_id'); // Define the following_id column
-
             // Add foreign key constraints
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->foreign('following_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      */

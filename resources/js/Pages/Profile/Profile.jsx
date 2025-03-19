@@ -13,14 +13,14 @@ import UpdateProfileForm from './Partials/UpdateProfileForm';
 const Profile = ({ posts, reviews }) => {
 
   console.log(reviews.length);
-  
+
 
   const { auth } = usePage().props;
 
   const [showAll, setShowAll] = useState(false)
   const [AllReviews, setAllReviews] = useState(false)
   const [showEditAbout, setShowEditAbout] = useState(false)
-  const [showEditProfile, setShowEditProfile] = useState(false) 
+  const [showEditProfile, setShowEditProfile] = useState(false)
 
 
   const handleEditAbout = () => {
@@ -40,9 +40,9 @@ const Profile = ({ posts, reviews }) => {
   const clickRef2 = useRef()
 
 
-    useOutsideClick(clickRef, ()=>setShowEditAbout(false))
+  useOutsideClick(clickRef, () => setShowEditAbout(false))
 
-    useOutsideClick(clickRef2, ()=>setShowEditProfile(false))
+  useOutsideClick(clickRef2, () => setShowEditProfile(false))
 
 
   return (
@@ -50,32 +50,32 @@ const Profile = ({ posts, reviews }) => {
       user={auth.user}
       header={<h2 className="text-xl font-semibold leading-tight text-gray-800">Profile</h2>}
     >
-      <div className=" px-[50px] py-[40px]">
-        <AccountCard postCount={postCount} user={auth.user} setShowEditProfile={setShowEditProfile}/>
-
-    {
-      showEditProfile &&
-      <UpdateProfileForm user={auth.user} clickRef={clickRef2} closeUpdateForm={handleEditProfile}/>
-      }
+      <div className=" px-[20px] md:px-[50px] py-[40px]">
+        <AccountCard postCount={postCount} user={auth.user} setShowEditProfile={setShowEditProfile} />
 
         {
-          account.about_me && <div className="px-[50px] py-[40px] w-[800px] mx-auto flex justify-between">
-           <div>
-            <h2 className='mb-3 text-xl font-semibold'>About Me</h2>
-            <p className='text-justify whitespace-pre-line'>{account.about_me}</p>
-           </div>
+          showEditProfile &&
+          <UpdateProfileForm user={auth.user} clickRef={clickRef2} closeUpdateForm={handleEditProfile} />
+        }
 
-           <div className="">
-               <BiEdit
-               onClick={handleEditAbout}
+        {
+          account.about_me && <div className="px-[50px] py-[40px] w-full md:w-[800px] mx-auto flex justify-between">
+            <div>
+              <h2 className='mb-3 text-xl font-semibold'>About Me</h2>
+              <p className='text-justify whitespace-pre-line'>{account.about_me}</p>
+            </div>
+
+            <div className="">
+              <BiEdit
+                onClick={handleEditAbout}
                 className='text-main-900 cursor-pointer text-[30px]' />
 
-                {
-                  showEditAbout &&
-                  <EditAboutBox clickRef={clickRef} setShowEditAbout={setShowEditAbout} account={account} />
-                }
-             
-          </div>
+              {
+                showEditAbout &&
+                <EditAboutBox clickRef={clickRef} setShowEditAbout={setShowEditAbout} account={account} />
+              }
+
+            </div>
 
           </div>
         }
@@ -83,7 +83,7 @@ const Profile = ({ posts, reviews }) => {
         {/* <hr className=' mt-9 h-[2px] bg-main-bright' /> */}
 
         {
-           pfAccount.role == 'expert' && reviews && reviews.length >0 && <Reviews AllReviews={AllReviews} setAllReviews={setAllReviews} pfAccount={pfAccount} reviews={reviews} />
+          <Reviews AllReviews={AllReviews} setAllReviews={setAllReviews} pfAccount={pfAccount} reviews={reviews} />
         }
 
 
@@ -94,7 +94,7 @@ const Profile = ({ posts, reviews }) => {
 
               posts.length > 0 ?
 
-                <div className=" px-[40px] py-[20px] ">
+                <div className=" px-[20px] py-[20px] ">
                   <div className="flex items-center justify-between">
                     <h2 className='my-12 text-2xl font-bold text-main-900 '>Your Posts </h2>
 
@@ -109,7 +109,7 @@ const Profile = ({ posts, reviews }) => {
                   </div>
 
 
-                  <div className="grid grid-cols-3 gap-3">
+                  <div className="grid gap-3 md:grid-cols-3">
 
                     {
 
@@ -137,7 +137,6 @@ const Profile = ({ posts, reviews }) => {
             }
           </>
         }
-
 
 
       </div>

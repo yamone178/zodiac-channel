@@ -6,43 +6,42 @@ import { Link } from '@inertiajs/react'
 import { GoArrowRight } from 'react-icons/go'
 import NoAccount from './NoAccount'
 
-const ZodiacMates = ({friends}) => {
+const ZodiacMates = ({ friends }) => {
 
-  
 
-    const [mates, setMates] = useState()
 
-    useEffect(()=>{
-      setMates(friends)
-    },[])
-    
-    
+  const [mates, setMates] = useState()
+
+  useEffect(() => {
+    setMates(friends)
+  }, [])
+
+
   return (
     <FollowLayout>
-       <div className="p-10">
-            <Search/>
+      <div className="p-5 md:p-10">
 
-            <div  className="flex items-center gap-2 mt-6 cursor-pointer">
-              <Link href={route('your-zodiac-mates')} >See Your Zodiac Mates </Link>
-              <Link href={route('your-zodiac-mates')} ><GoArrowRight className='float-right '/> </Link>
-              
-            </div>
+        <div className="flex items-center gap-2 mt-6 cursor-pointer">
+          <Link href={route('your-zodiac-mates')} >See Your Zodiac Mates </Link>
+          <Link href={route('your-zodiac-mates')} ><GoArrowRight className='float-right ' /> </Link>
 
-            { 
-            mates?.length >0  ?
-            <div className="grid grid-cols-3 gap-4 mt-6">
-                
-                {
-                     mates.map((mate) =>  <SuggestCard key={mate.id} mate={mate}/>)
-                   
-                }
-               
-               
+        </div>
+
+        {
+          mates?.length > 0 ?
+            <div className="grid gap-4 mt-6 md:grid-cols-3">
+
+              {
+                mates.map((mate) => <SuggestCard key={mate.id} mate={mate} />)
+
+              }
+
+
             </div>
-             :
-             <NoAccount />    
+            :
+            <NoAccount />
         }
-       </div>
+      </div>
     </FollowLayout>
   )
 }

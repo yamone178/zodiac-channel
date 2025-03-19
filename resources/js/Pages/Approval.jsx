@@ -40,30 +40,7 @@ const Approval = ({user}) => {
                                 </Link>
                                 </div>
 
-                                {/* <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                    <NavLink className=' text-main-900' href={route('home')} active={route().current('home')}>
-                                            <BiHome fontSize="27px" />
-                                            <p className='mt-3'>Home</p>          
-                                    </NavLink>
-
-                                    <NavLink  className=' text-main-900' href={route('horoscope')} active={route().current('horoscope')} >
-                                            <RiStarLine fontSize="27px" />
-                                            <p className='mt-3'>My Horoscope</p>
-                                    </NavLink>
-
-                                    <NavLink  className=' text-main-900' href={route('zodiac-mate')} active={route().current('zodiac-mate')} >
-                                            <LiaUserFriendsSolid fontSize="27px" />
-
-                                            <p className='mt-3'>Zodiac Mates</p>
-                                    </NavLink>
-
-                                    <NavLink  className=' text-main-900' href={route('expert')}  active={route().current('expert')}>
-                                            <TbUserStar fontSize="27px" />
-                                            <p className='mt-3'>Experts</p>
-                                    </NavLink>
-
                                 
-                                </div> */}
                             </div>
 
                             <div className="hidden sm:flex sm:items-center sm:ms-6">

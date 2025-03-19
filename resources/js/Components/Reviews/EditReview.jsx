@@ -5,10 +5,7 @@ import { GoStar, GoStarFill } from 'react-icons/go';
 
 
 const EditReview = ({expert_id, user_id, oldReview} ) => {
-    console.log(expert_id, user_id);
-    
-    // const expert_id = expert_id
-
+ 
     const {data, setData, post, processing, errors, reset } = useForm({
         'review_text': oldReview.review_text,
         'rating': oldReview.rating,
@@ -40,8 +37,6 @@ const EditReview = ({expert_id, user_id, oldReview} ) => {
         
     }
    
-    
-
   return (
     <div className='flex w-[800px] m-auto mt-8 justify-between '>
       <RoundedImage id={auth.user.id} pf={pf} className="w-[60px] h-[60px]"  />
