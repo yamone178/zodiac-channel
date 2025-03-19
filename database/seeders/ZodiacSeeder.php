@@ -13,19 +13,20 @@ class ZodiacSeeder extends Seeder
      */
     public function run(): void
     {
-        // Path to the CSV file stored in the storage/app directory
-        $file = Storage::get('zodiacs.csv');
-        // Open and read the CSV file
-        $csv = array_map('str_getcsv', file($file));
+        // Retrieve the contents of the CSV file
+        $fileContent = Storage::get('zodiacs.csv');
+    
+        // Convert file content into an array
+        $csv = array_map('str_getcsv', explode(PHP_EOL, $fileContent));
+        
         // Remove the header row (if present)
         $header = array_shift($csv);
-
+    
         // Loop through each row in the CSV file
         foreach ($csv as $row) {
             if (count($row) < 4) {
                 throw new \Exception("Invalid CSV row: " . json_encode($row));
             }
-        
             DB::table('zodiacs')->insert([
                 'id' => $row[0],
                 'name' => $row[1],
