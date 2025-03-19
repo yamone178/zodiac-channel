@@ -14,7 +14,7 @@ class ZodiacSeeder extends Seeder
     public function run(): void
     {
         // Define the correct file path
-        $filePath = storage_path('app/zodiacs.csv');
+        $filePath = public_path('storage/app/zodiacs.csv');
 
         // Check if the file exists before reading
         if (!file_exists($filePath)) {
