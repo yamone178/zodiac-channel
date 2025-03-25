@@ -27,8 +27,8 @@ class UserController extends Controller
         $oldImage = $user->profile_picture;
         if ($request->hasFile('data.profile_picture')) {
 
-            if ($oldImage && file_exists(public_path('images/' . $oldImage))) {
-                unlink(public_path('images/' . $oldImage));
+            if ($oldImage && file_exists(asset('images/' . $oldImage))) {
+                unlink(asset('images/' . $oldImage));
             }
 
             $fileName = uniqid() . $request->file('data.profile_picture')->getClientOriginalName();

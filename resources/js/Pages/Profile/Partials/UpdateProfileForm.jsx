@@ -1,5 +1,5 @@
 import { useForm, usePage } from '@inertiajs/react';
-import React from 'react'
+import React, { useState } from 'react'
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -7,9 +7,12 @@ import TextInput from '@/Components/TextInput';
 import { router } from '@inertiajs/react'
 import RoundedImage from '@/Components/RoundedImage';
 import TextArea from '@/Components/TextArea';
+import noPf from '../../../../../public/assets/images/profile-image.jpg'
 
 
 const UpdateProfileForm = ({ user, clickRef, closeUpdateForm }) => {
+
+    const [showImg, setShowImg] = useState()
 
     const userAccount = user.role == 'user' ? user.normal_user : user.expert
     const { data, setData, post, processing, errors, reset, put } = useForm({
@@ -22,6 +25,7 @@ const UpdateProfileForm = ({ user, clickRef, closeUpdateForm }) => {
         about_me: userAccount.about_me
     });
 
+    
 
     const { auth } = usePage().props
 
@@ -48,6 +52,15 @@ const UpdateProfileForm = ({ user, clickRef, closeUpdateForm }) => {
 
     };
 
+    
+      const handleImage = (e) => {
+        e.preventDefault()
+        setData('profile_picture', e.target.files[0])
+        
+        setShowImg(URL.createObjectURL(e.target.files[0]))
+    
+      }
+
 
     return (
         <div className=" fixed h-screen top-0 left-0  z-10 bg-[#8080807d] w-[100%]">
@@ -56,8 +69,11 @@ const UpdateProfileForm = ({ user, clickRef, closeUpdateForm }) => {
 
                 <div className="flex items-center justify-center gap-4 mb-3 ">
 
-                    {userAccount.profile_picture &&
-                        <RoundedImage pf={userAccount.profile_picture_url} className="w-[90px] h-[90px]" id={user.id} />
+                    {userAccount.profile_picture ?
+                        <RoundedImage pf={showImg ? showImg: userAccount.profile_picture_url} className="w-[90px] h-[90px]" id={user.id} />
+                        :
+                        <RoundedImage pf={showImg ? showImg : noPf} className="w-[90px] h-[90px]" id={user.id} />
+  
                     }
 
                     <div className='mb-3 '>
@@ -69,7 +85,7 @@ const UpdateProfileForm = ({ user, clickRef, closeUpdateForm }) => {
 
                             className="block w-full mt-2"
                             type='file'
-                            onChange={(e) => setData('profile_picture', e.target.files[0])}
+                            onChange={handleImage}
 
                         />
 
