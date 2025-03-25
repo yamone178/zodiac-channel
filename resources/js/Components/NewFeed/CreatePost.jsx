@@ -149,7 +149,7 @@ const CreatePost = ({ zodiacs, clickRef, closeModal }) => {
           </select>
         </div>
 
-        <div className="flex flex-wrap gap-2 image-viewer">
+        <div className="flex flex-wrap gap-2 mb-6 image-viewer">
           {
             showImg && showImg.map((img, index) => <div key={index} className=' w-[180px] h-[180px] object-cover'>
               <IoIosClose
