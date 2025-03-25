@@ -84,7 +84,7 @@ export default function Welcome({ heroImg, auth, logoImg }) {
     <>
       <NavBeforeLogin />
 
-      <div className="flex flex-col justify-between bg-gradient-to-b from-black/95 to-purple-950 px-[30px] md:px-[80px] items-center py-[50px] lg:py-[0px]">
+      <div className="flex flex-col md:flex-row justify-between bg-gradient-to-b from-black/95 to-purple-950 px-[30px] md:px-[80px] items-center py-[50px] lg:py-[0px]">
 
         <div className=" w-full lg:w-[600px] text-white">
           <h2 className='mb-5 text-4xl '>Welcome to the Zodiac Channel </h2>
