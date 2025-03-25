@@ -84,9 +84,9 @@ export default function Welcome({ heroImg, auth, logoImg }) {
     <>
       <NavBeforeLogin />
 
-      <div className="flex justify-between bg-gradient-to-b from-black/95 to-purple-950 px-[80px] items-center">
+      <div className="flex flex-col justify-between bg-gradient-to-b from-black/95 to-purple-950 px-[30px] md:px-[80px] items-center py-[50px] lg:py-[0px]">
 
-        <div className="w-[600px] text-white">
+        <div className=" w-full lg:w-[600px] text-white">
           <h2 className='mb-5 text-4xl '>Welcome to the Zodiac Channel </h2>
           <p className='mb-5 text-lg text-justify'>
             Join a vibrant community of astrology enthusiasts! Share insights, exchange ideas, and discover how the stars align in your life. Connect, communicate, and let the universe inspire meaningful conversations.              </p>
@@ -95,19 +95,19 @@ export default function Welcome({ heroImg, auth, logoImg }) {
           </button>
         </div>
 
-        <div className=" w-[500px] py-[60px] px-10">
+        <div className=" hidden lg:block w-[500px] py-[60px] px-10">
           <img src={heroImg} alt="" className='w-full' />
         </div>
 
 
       </div>
 
-      <section className='py-10 text-black bg-gradient-to-b px-[80px] '>
+      <section className='py-10 text-black bg-gradient-to-b px-[20px] md:px-[80px] '>
         <h2 className='mb-8 text-2xl font-bold text-center text-purple-950'>Check your Zodiac</h2>
-        <div className="grid grid-cols-4 space-y-3">
+        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
           {
             signs.map((sign) => (
-              <div key={sign.id} className='flex w-[250px] mx-auto flex-col items-center gap-5 p-6 text-black rounded-lg bg-purple-950/35'>
+              <div key={sign.id} className='flex w-[160px] md:w-[250px] mx-auto flex-col items-center gap-5 p-6 text-black rounded-lg bg-purple-950/35'>
                 <p className='flex font-bold items-center justify-center w-10 h-10 text-black rounded-full text-[50px]'>
                   {sign.icon}
                 </p>

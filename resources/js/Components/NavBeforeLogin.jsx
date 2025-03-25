@@ -54,15 +54,7 @@ const NavBeforeLogin = () => {
                         </div>
                     </div>
 
-                    <div className="flex items-center justify-center gap-5">
-                        <button>
-                            <Link href="/register" className='px-5 py-2 text-black bg-white rounded-md'>Register</Link>
-                        </button>
-
-                        <button>
-                            <Link href="/login" className='px-5 py-2 text-black bg-white rounded-md'>Login</Link>
-                        </button>
-                    </div>
+                    
 
                     <div className="flex items-center -me-2 sm:hidden">
                         <button
@@ -89,12 +81,22 @@ const NavBeforeLogin = () => {
                     </div>
                 </div>
             </div>
+            
             <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
-                <div className="pt-2 pb-3 space-y-1">
+                    <div className="flex flex-col items-center justify-center gap-5 md:flex-row">
+                        <button>
+                            <Link href="/register" className='px-5 py-2 text-black bg-white rounded-md '>Register</Link>
+                        </button>
+
+                        <button>
+                            <Link href="/login" className='px-5 py-2 text-black bg-white rounded-md'>Login</Link>
+                        </button>
+                    </div>
+                {/* <div className="pt-2 pb-3 space-y-1">
                     <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
                         Dashboard
                     </ResponsiveNavLink>
-                </div>
+                </div> */}
             </div>
         </nav>
     )
