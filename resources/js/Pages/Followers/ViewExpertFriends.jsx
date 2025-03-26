@@ -50,7 +50,7 @@ const ViewExpertFriends = ({ followers, followings }) => {
 
         {
           mates?.length > 0 ?
-            <div className="grid grid-cols-3 gap-4 mt-6">
+            <div className="grid gap-4 mt-6 md:grid-cols-3">
 
               {
                 mates.map((mate) => <SuggestCard key={mate.id} mate={mate} />)

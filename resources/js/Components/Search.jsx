@@ -19,7 +19,7 @@ const Search = ({ searchUsers }) => {
     };
     return (
         <>
-            <div className="mx-3 xl:w-96">
+            <div className="mx-3 my-3 lg:my-0 xl:w-96">
                 <form
                     onSubmit={handleSearch} // Properly pass the function without invoking it immediately
                     className="relative flex flex-wrap items-stretch w-full px-3 py-2 bg-white border rounded-md"

@@ -47,7 +47,7 @@ const ViewYourZodiacMates = ({ followers, followings }) => {
 
         </div>
 
-        <div className="grid grid-cols-3 gap-4 mt-6">
+        <div className="grid gap-4 mt-6 md:grid-cols-3">
 
           {
             mates && mates.map((mate) => <SuggestCard key={mate.id} mate={mate} />)

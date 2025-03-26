@@ -26,7 +26,7 @@ const ViewAccount = ({ posts, pfAccount, follow, reviews }) => {
 
 
 
-      <div className=" relative px-[50px] py-[40px]">
+      <div className=" relative px-[10px] lg:px-[50px] py-[40px]">
 
         <AccountCard follow={follow} postCount={postCount} user={pfAccount} />
 
@@ -49,7 +49,7 @@ const ViewAccount = ({ posts, pfAccount, follow, reviews }) => {
 
             posts.length > 0 ?
 
-              <div className=" px-[40px] py-[20px] ">
+              <div className=" px-[10px] lg:px-[40px] py-[20px] ">
                 <div className="flex items-center justify-between">
                   <h2 className='my-12 text-2xl font-bold text-main-900 '>{pfAccount.name}'s Posts </h2>
 
@@ -64,7 +64,7 @@ const ViewAccount = ({ posts, pfAccount, follow, reviews }) => {
                 </div>
 
 
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 gap-3 lg:grid-cols-3">
 
                   {
 

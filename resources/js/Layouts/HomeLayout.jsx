@@ -45,7 +45,7 @@ const HomeLayout = ({ user, account, children }) => {
             header={<h2 className="text-xl font-semibold leading-tight text-gray-800">HomeLayout</h2>}
         >
 
-            <div className="flex flex-col md:flex-row gap-y-4 md:gap-0 justify-between mt-[20px] mx-[30px] md:mx-[4.5rem]">
+            <div className="flex flex-col md:flex-row gap-y-4 md:gap-0 justify-between mt-[20px] mx-[10px]  md:mx-[4.5rem]">
 
                 <div>
                     <SideCard
